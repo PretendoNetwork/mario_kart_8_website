@@ -86,8 +86,11 @@ export interface Gathering {
   host: number;
   owner: number;
   attributes: number[];
+  gameMode: number;
   appData: Uint8Array;
   players: number[];
+  minParticipants: number;
+  maxParticipants: number;
 }
 
 export interface GetAllGatheringsRequest {
@@ -1241,7 +1244,17 @@ export const KickAllUsersResponse = {
 };
 
 function createBaseGathering(): Gathering {
-  return { gid: 0, host: 0, owner: 0, attributes: [], appData: new Uint8Array(0), players: [] };
+  return {
+    gid: 0,
+    host: 0,
+    owner: 0,
+    attributes: [],
+    gameMode: 0,
+    appData: new Uint8Array(0),
+    players: [],
+    minParticipants: 0,
+    maxParticipants: 0,
+  };
 }
 
 export const Gathering = {
@@ -1260,14 +1273,23 @@ export const Gathering = {
       writer.uint32(v);
     }
     writer.ldelim();
-    if (message.appData.length !== 0) {
-      writer.uint32(42).bytes(message.appData);
+    if (message.gameMode !== 0) {
+      writer.uint32(40).uint32(message.gameMode);
     }
-    writer.uint32(50).fork();
+    if (message.appData.length !== 0) {
+      writer.uint32(50).bytes(message.appData);
+    }
+    writer.uint32(58).fork();
     for (const v of message.players) {
       writer.int64(v);
     }
     writer.ldelim();
+    if (message.minParticipants !== 0) {
+      writer.uint32(64).uint32(message.minParticipants);
+    }
+    if (message.maxParticipants !== 0) {
+      writer.uint32(72).uint32(message.maxParticipants);
+    }
     return writer;
   },
 
@@ -1317,20 +1339,27 @@ export const Gathering = {
 
           break;
         case 5:
-          if (tag !== 42) {
+          if (tag !== 40) {
+            break;
+          }
+
+          message.gameMode = reader.uint32();
+          continue;
+        case 6:
+          if (tag !== 50) {
             break;
           }
 
           message.appData = reader.bytes();
           continue;
-        case 6:
-          if (tag === 48) {
+        case 7:
+          if (tag === 56) {
             message.players.push(longToNumber(reader.int64() as Long));
 
             continue;
           }
 
-          if (tag === 50) {
+          if (tag === 58) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
               message.players.push(longToNumber(reader.int64() as Long));
@@ -1340,6 +1369,20 @@ export const Gathering = {
           }
 
           break;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.minParticipants = reader.uint32();
+          continue;
+        case 9:
+          if (tag !== 72) {
+            break;
+          }
+
+          message.maxParticipants = reader.uint32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1355,8 +1398,11 @@ export const Gathering = {
       host: isSet(object.host) ? Number(object.host) : 0,
       owner: isSet(object.owner) ? Number(object.owner) : 0,
       attributes: Array.isArray(object?.attributes) ? object.attributes.map((e: any) => Number(e)) : [],
+      gameMode: isSet(object.gameMode) ? Number(object.gameMode) : 0,
       appData: isSet(object.appData) ? bytesFromBase64(object.appData) : new Uint8Array(0),
       players: Array.isArray(object?.players) ? object.players.map((e: any) => Number(e)) : [],
+      minParticipants: isSet(object.minParticipants) ? Number(object.minParticipants) : 0,
+      maxParticipants: isSet(object.maxParticipants) ? Number(object.maxParticipants) : 0,
     };
   },
 
@@ -1370,6 +1416,7 @@ export const Gathering = {
     } else {
       obj.attributes = [];
     }
+    message.gameMode !== undefined && (obj.gameMode = Math.round(message.gameMode));
     message.appData !== undefined &&
       (obj.appData = base64FromBytes(message.appData !== undefined ? message.appData : new Uint8Array(0)));
     if (message.players) {
@@ -1377,6 +1424,8 @@ export const Gathering = {
     } else {
       obj.players = [];
     }
+    message.minParticipants !== undefined && (obj.minParticipants = Math.round(message.minParticipants));
+    message.maxParticipants !== undefined && (obj.maxParticipants = Math.round(message.maxParticipants));
     return obj;
   },
 
@@ -1390,8 +1439,11 @@ export const Gathering = {
     message.host = object.host ?? 0;
     message.owner = object.owner ?? 0;
     message.attributes = object.attributes?.map((e) => e) || [];
+    message.gameMode = object.gameMode ?? 0;
     message.appData = object.appData ?? new Uint8Array(0);
     message.players = object.players?.map((e) => e) || [];
+    message.minParticipants = object.minParticipants ?? 0;
+    message.maxParticipants = object.maxParticipants ?? 0;
     return message;
   },
 };

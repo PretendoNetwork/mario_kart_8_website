@@ -107,10 +107,11 @@ message Gathering {
     uint32 host = 2;
     uint32 owner = 3;
     repeated uint32 attributes = 4;
-    bytes app_data = 5;
-    repeated int64 players = 6;
-    uint32 min_participants = 7;
-    uint32 max_participants = 8;
+    uint32 game_mode = 5;
+    bytes app_data = 6;
+    repeated int64 players = 7;
+    uint32 min_participants = 8;
+    uint32 max_participants = 9;
 }
 
 message GetAllGatheringsRequest {
