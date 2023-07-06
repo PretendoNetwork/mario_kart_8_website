@@ -74,18 +74,16 @@ export default function TournamentsPage() {
                                 <p>
                                     {"The times displayed here are in your local time. If they mismatch from the times you've entered in game, either:"}
                                 </p>
-                                <li>Your account was registered in a different timezone</li>
-                                <li>You are using an outdated CEMU version, please use <strong>2.0-43 or higher</strong>.</li>
+                                <p>• Your account was registered in a different timezone</p>
+                                <p>• You are using an outdated CEMU version, please use <strong>2.0-43 or higher</strong>.</p>
                             </Alert>
                             <div className="d-flex flex-column justify-content-center align-items-center">
                                 {
                                     allTournaments.map((tournament, idx) => {
                                         return (
-                                            <>
-                                                <div className="ms-5 me-5 mb-3" key={idx}>
-                                                    <TournamentEntry tournament={tournament} />
-                                                </div>
-                                            </>
+                                            <div className="ms-5 me-5 mb-3" key={idx}>
+                                                <TournamentEntry tournament={tournament} />
+                                            </div>
                                         );
                                     })
                                 }

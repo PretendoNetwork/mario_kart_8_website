@@ -53,22 +53,18 @@ const HomePage = () => {
                         <Alert>
                             <Alert.Heading>How to play on this server?</Alert.Heading>
                             <hr />
-                            <p className="mb-0">
-                                <li>Follow the steps to join the Pretendo Network on <Link href="https://pretendo.network">our website</Link>!</li>
-                                <li>Create / log on your PNID account and simply start Mario Kart 8</li>
-                            </p>
+                            <p>• Follow the steps to join the Pretendo Network on <Link href="https://pretendo.network">our website</Link>!</p>
+                            <p>• Create / log on your PNID account and simply start Mario Kart 8</p>
                         </Alert>
                         <Alert variant="success">
                             <Alert.Heading>Is there any rules?</Alert.Heading>
                             <hr />
-                            <p className="mb-0">
-                                <li>You may only use cheats in friend rooms</li>
-                                <li>You should not disrupt gameplay or server uptime</li>
-                                <li>{"Do not generate any user-content (tournament, Mii names) with injury or NSFW content."}</li>
-                                <li>You may have fun. {"(If red shells allow you)"}</li>
-                                <li>Have common sense, we may issue a ban even for something that is not on list</li>
-                            </p>
-                            <hr></hr>
+                            <p>• You may only use cheats in friend rooms</p>
+                            <p>• You should not disrupt gameplay or server uptime</p>
+                            <p>• {"Do not generate any user-content (tournament, Mii names) with injury or NSFW content."}</p>
+                            <p>• You may have fun. {"(If red shells allow you)"}</p>
+                            <p>• Have common sense, we may issue a ban even for something that is not on list</p>
+                            <hr />
                             <p className="mb-0">
                                 <strong>Breaching the rules can get your account or console temporarily/permanently banned from our services</strong> (🤓)
                             </p>
@@ -134,9 +130,9 @@ const HomePage = () => {
                     </Tab>
                     <Tab eventKey="contact" title="CEMU Users">
                         <Alert variant="info">
-                            <li>Use CEMU 2.0-43 experimental or higher</li>
-                            <li>{"We don't support piracy and we recommend dumping files from your own console."}</li>
-                            <li>{"Files downloaded from the website aren't supported anymore"}</li>
+                            <p>• Use CEMU 2.0-43 experimental or higher</p>
+                            <p>• {"We don't support piracy and we recommend dumping files from your own console."}</p>
+                            <p>• {"Files downloaded from the website aren't supported anymore"}</p>
                         </Alert>
 
                     </Tab>
