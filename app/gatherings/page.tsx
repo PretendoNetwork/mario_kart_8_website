@@ -26,11 +26,18 @@ export default function GatheringsPage() {
     }
 
     useEffect(() => {
-        fetchAllGatherings();
-        const fetchInterval = setInterval(fetchAllGatherings, updateTime * 1000);
+        const fetchAllGatheringsAndStartTimer = async () => {
+            await fetchAllGatherings();
+            setTimer(updateTime - 1);
+        };
+
+        // Call fetchAllGatherings when the page is loaded
+        fetchAllGatheringsAndStartTimer();
+
         const timerInterval = setInterval(() => {
             setTimer((timer) => {
-                if (timer == 0) {
+                if (timer === 0) {
+                    fetchAllGatheringsAndStartTimer();
                     return updateTime - 1;
                 } else {
                     return timer - 1;
@@ -38,12 +45,10 @@ export default function GatheringsPage() {
             });
         }, 1000);
 
-        return () => {
-            clearInterval(fetchInterval);
-            clearInterval(timerInterval)
-        }
+        return () => clearInterval(timerInterval);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
 
     const getPageJSX = () => {
         if (!allGatheringsResponse) {
@@ -54,7 +59,7 @@ export default function GatheringsPage() {
                     <Alert variant="danger" onClick={() => { document.location.reload() }}>
                         <Alert.Heading>Error fetching gatherings</Alert.Heading>
                         <p>
-                            This error should never happen, try refreshing the page!
+                            This error should only happen if the NEX server is down, try refreshing the page.
                         </p>
                         <hr />
                         <p>

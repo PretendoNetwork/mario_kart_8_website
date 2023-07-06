@@ -4,11 +4,12 @@ import { type JWTTokenPayload, getMK8Token, getMK8TokenFromAccountAPI } from './
 
 export async function middleware(request: NextRequest) {
 
-    if (request.nextUrl.pathname.startsWith('/logout')) {
-        const referer: string | null = request.headers.get("referer");
-        const url = new URL(referer ? referer : '/', request.url);
+    const nextPathname = request.nextUrl.pathname;
 
+    if (nextPathname.startsWith('/logout')) {
+        const url = new URL('/', request.url);
         const response = NextResponse.redirect(url);
+
         response.cookies.set("mk8_token", "", { maxAge: 0, domain: ".pretendo.network" });
         response.cookies.set("access_token", "", { maxAge: 0, domain: ".pretendo.network" });
         response.cookies.set("refresh_token", "", { maxAge: 0, domain: ".pretendo.network" });
@@ -23,7 +24,7 @@ export async function middleware(request: NextRequest) {
     let res;
     if (!mk8_token) {
         res = await getMK8TokenFromAccountAPI(request);
-        if (!res && request.nextUrl.pathname.startsWith('/admin')) {
+        if (!res && nextPathname.startsWith('/admin')) {
             const response = NextResponse.redirect(redirect_login_url);
             if (request.cookies.has("mk8_token")) {
                 response.cookies.delete("mk8_token");
@@ -35,7 +36,20 @@ export async function middleware(request: NextRequest) {
         }
     }
 
-    if (request.nextUrl.pathname.startsWith('/admin')) {
+    if (nextPathname.startsWith('/dashboard') && !mk8_token) {
+        const url = new URL('/', request.url);
+        return NextResponse.redirect(url);
+    }
+
+    if (nextPathname.startsWith('/api/admin')) {
+        if (mk8_token && mk8_token.access_level >= 3) {
+            return NextResponse.next();
+        } else {
+            return new NextResponse("{}", { status: 401 });
+        }
+    }
+
+    if (nextPathname.startsWith('/admin')) {
         if (mk8_token) {
             if (mk8_token.access_level < 3) {
                 var response = NextResponse.redirect(new URL('/', request.url));
@@ -43,7 +57,7 @@ export async function middleware(request: NextRequest) {
                 var response = NextResponse.next();
             }
 
-            response.headers.set("X-MK8-Pretendo-SAL", mk8_token.server_access_level);
+            response.headers.set("X-MK8-Pretendo-ACL", mk8_token.access_level.toString());
             response.headers.set("X-MK8-Pretendo-Username", mk8_token.pnid);
             response.headers.set("X-MK8-Pretendo-ImageURL", mk8_token.mii_image_url);
             response.headers.set("X-MK8-Pretendo-PID", mk8_token.pid.toString());
@@ -62,7 +76,7 @@ export async function middleware(request: NextRequest) {
     } else {
         const response = NextResponse.next();
         if (mk8_token) {
-            response.headers.set("X-MK8-Pretendo-SAL", mk8_token.server_access_level);
+            response.headers.set("X-MK8-Pretendo-ACL", mk8_token.access_level.toString());
             response.headers.set("X-MK8-Pretendo-Username", mk8_token.pnid);
             response.headers.set("X-MK8-Pretendo-ImageURL", mk8_token.mii_image_url);
             response.headers.set("X-MK8-Pretendo-PID", mk8_token.pid.toString());

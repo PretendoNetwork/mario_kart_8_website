@@ -7,7 +7,7 @@ export interface StaticPopoverProps {
     align_center?: boolean;
 }
 
-export const StaticPopover: React.FC<StaticPopoverProps> = ({ title, body, align_center }) => {
+export const StaticToast: React.FC<StaticPopoverProps> = ({ title, body, align_center }) => {
     return (
         <ToastContainer className={"p-3" + (align_center ? " text-center" : "")} position="bottom-end" style={{ zIndex: 1, position: 'fixed' }}>
             <Toast>

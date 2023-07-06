@@ -25,6 +25,15 @@ export async function getMK8Token(request: NextRequest): Promise<JWTTokenPayload
     return null;
 }
 
+export async function getMK8TokenEx(mk8_token: string): Promise<JWTTokenPayload | null> {
+    try {
+        const verifyResult = await jwtVerify(mk8_token, new TextEncoder().encode(app_config.jwt_secret));
+        return verifyResult.payload as JWTTokenPayload;
+    } catch (error) { }
+
+    return null;
+}
+
 export async function getMK8TokenFromAccountAPI(request: NextRequest): Promise<{ token: JWTTokenPayload, jwt_token: string } | null> {
 
     const token_type = request.cookies.get("token_type")?.value;

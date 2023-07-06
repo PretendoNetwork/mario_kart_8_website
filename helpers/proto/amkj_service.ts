@@ -19,7 +19,8 @@ export interface GetServerStatusResponse {
 }
 
 export interface StartMaintenanceRequest {
-  projectedUtcEndMaintenanceTime: Date | undefined;
+  utcStartMaintenanceTime: Date | undefined;
+  utcEndMaintenanceTime: Date | undefined;
 }
 
 export interface StartMaintenanceResponse {
@@ -106,6 +107,7 @@ export interface Tournament {
   id: number;
   owner: number;
   attributes: number[];
+  communityCode: string;
   appData: Uint8Array;
   totalParticipants: number;
   seasonId: number;
@@ -118,6 +120,12 @@ export interface Tournament {
   iconType: number;
   battleTime: number;
   updateDate: number;
+  startDayTime: number;
+  endDayTime: number;
+  startTime: number;
+  endTime: number;
+  startDateTime: Date | undefined;
+  endDateTime: Date | undefined;
 }
 
 export interface GetAllTournamentsRequest {
@@ -127,6 +135,25 @@ export interface GetAllTournamentsRequest {
 
 export interface GetAllTournamentsResponse {
   tournaments: Tournament[];
+}
+
+export interface GetUnlocksRequest {
+  pid: number;
+}
+
+export interface GetUnlocksResponse {
+  hasData: boolean;
+  vrRate: number;
+  brRate: number;
+  lastUpdate: Date | undefined;
+  gpUnlocks: number[];
+  engineUnlocks: number[];
+  driverUnlocks: number[];
+  bodyUnlocks: number[];
+  tireUnlocks: number[];
+  wingUnlocks: number[];
+  stampUnlocks: number[];
+  dlcUnlocks: number[];
 }
 
 function createBaseGetServerStatusRequest(): GetServerStatusRequest {
@@ -307,13 +334,16 @@ export const GetServerStatusResponse = {
 };
 
 function createBaseStartMaintenanceRequest(): StartMaintenanceRequest {
-  return { projectedUtcEndMaintenanceTime: undefined };
+  return { utcStartMaintenanceTime: undefined, utcEndMaintenanceTime: undefined };
 }
 
 export const StartMaintenanceRequest = {
   encode(message: StartMaintenanceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.projectedUtcEndMaintenanceTime !== undefined) {
-      Timestamp.encode(toTimestamp(message.projectedUtcEndMaintenanceTime), writer.uint32(10).fork()).ldelim();
+    if (message.utcStartMaintenanceTime !== undefined) {
+      Timestamp.encode(toTimestamp(message.utcStartMaintenanceTime), writer.uint32(10).fork()).ldelim();
+    }
+    if (message.utcEndMaintenanceTime !== undefined) {
+      Timestamp.encode(toTimestamp(message.utcEndMaintenanceTime), writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -330,7 +360,14 @@ export const StartMaintenanceRequest = {
             break;
           }
 
-          message.projectedUtcEndMaintenanceTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.utcStartMaintenanceTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.utcEndMaintenanceTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -343,16 +380,21 @@ export const StartMaintenanceRequest = {
 
   fromJSON(object: any): StartMaintenanceRequest {
     return {
-      projectedUtcEndMaintenanceTime: isSet(object.projectedUtcEndMaintenanceTime)
-        ? fromJsonTimestamp(object.projectedUtcEndMaintenanceTime)
+      utcStartMaintenanceTime: isSet(object.utcStartMaintenanceTime)
+        ? fromJsonTimestamp(object.utcStartMaintenanceTime)
+        : undefined,
+      utcEndMaintenanceTime: isSet(object.utcEndMaintenanceTime)
+        ? fromJsonTimestamp(object.utcEndMaintenanceTime)
         : undefined,
     };
   },
 
   toJSON(message: StartMaintenanceRequest): unknown {
     const obj: any = {};
-    message.projectedUtcEndMaintenanceTime !== undefined &&
-      (obj.projectedUtcEndMaintenanceTime = message.projectedUtcEndMaintenanceTime.toISOString());
+    message.utcStartMaintenanceTime !== undefined &&
+      (obj.utcStartMaintenanceTime = message.utcStartMaintenanceTime.toISOString());
+    message.utcEndMaintenanceTime !== undefined &&
+      (obj.utcEndMaintenanceTime = message.utcEndMaintenanceTime.toISOString());
     return obj;
   },
 
@@ -362,7 +404,8 @@ export const StartMaintenanceRequest = {
 
   fromPartial(object: DeepPartial<StartMaintenanceRequest>): StartMaintenanceRequest {
     const message = createBaseStartMaintenanceRequest();
-    message.projectedUtcEndMaintenanceTime = object.projectedUtcEndMaintenanceTime ?? undefined;
+    message.utcStartMaintenanceTime = object.utcStartMaintenanceTime ?? undefined;
+    message.utcEndMaintenanceTime = object.utcEndMaintenanceTime ?? undefined;
     return message;
   },
 };
@@ -1586,6 +1629,7 @@ function createBaseTournament(): Tournament {
     id: 0,
     owner: 0,
     attributes: [],
+    communityCode: "",
     appData: new Uint8Array(0),
     totalParticipants: 0,
     seasonId: 0,
@@ -1598,6 +1642,12 @@ function createBaseTournament(): Tournament {
     iconType: 0,
     battleTime: 0,
     updateDate: 0,
+    startDayTime: 0,
+    endDayTime: 0,
+    startTime: 0,
+    endTime: 0,
+    startDateTime: undefined,
+    endDateTime: undefined,
   };
 }
 
@@ -1614,41 +1664,62 @@ export const Tournament = {
       writer.uint32(v);
     }
     writer.ldelim();
+    if (message.communityCode !== "") {
+      writer.uint32(34).string(message.communityCode);
+    }
     if (message.appData.length !== 0) {
-      writer.uint32(34).bytes(message.appData);
+      writer.uint32(42).bytes(message.appData);
     }
     if (message.totalParticipants !== 0) {
-      writer.uint32(40).int64(message.totalParticipants);
+      writer.uint32(48).int64(message.totalParticipants);
     }
     if (message.seasonId !== 0) {
-      writer.uint32(48).int64(message.seasonId);
+      writer.uint32(56).int64(message.seasonId);
     }
     if (message.name !== "") {
-      writer.uint32(58).string(message.name);
+      writer.uint32(66).string(message.name);
     }
     if (message.description !== "") {
-      writer.uint32(66).string(message.description);
+      writer.uint32(74).string(message.description);
     }
     if (message.redTeam !== "") {
-      writer.uint32(74).string(message.redTeam);
+      writer.uint32(82).string(message.redTeam);
     }
     if (message.blueTeam !== "") {
-      writer.uint32(82).string(message.blueTeam);
+      writer.uint32(90).string(message.blueTeam);
     }
     if (message.repeatType !== 0) {
-      writer.uint32(88).uint32(message.repeatType);
+      writer.uint32(96).uint32(message.repeatType);
     }
     if (message.gamesetNum !== 0) {
-      writer.uint32(96).uint32(message.gamesetNum);
+      writer.uint32(104).uint32(message.gamesetNum);
     }
     if (message.iconType !== 0) {
-      writer.uint32(104).uint32(message.iconType);
+      writer.uint32(112).uint32(message.iconType);
     }
     if (message.battleTime !== 0) {
-      writer.uint32(112).uint32(message.battleTime);
+      writer.uint32(120).uint32(message.battleTime);
     }
     if (message.updateDate !== 0) {
-      writer.uint32(120).uint32(message.updateDate);
+      writer.uint32(128).uint32(message.updateDate);
+    }
+    if (message.startDayTime !== 0) {
+      writer.uint32(136).uint32(message.startDayTime);
+    }
+    if (message.endDayTime !== 0) {
+      writer.uint32(144).uint32(message.endDayTime);
+    }
+    if (message.startTime !== 0) {
+      writer.uint32(152).uint32(message.startTime);
+    }
+    if (message.endTime !== 0) {
+      writer.uint32(160).uint32(message.endTime);
+    }
+    if (message.startDateTime !== undefined) {
+      Timestamp.encode(toTimestamp(message.startDateTime), writer.uint32(170).fork()).ldelim();
+    }
+    if (message.endDateTime !== undefined) {
+      Timestamp.encode(toTimestamp(message.endDateTime), writer.uint32(178).fork()).ldelim();
     }
     return writer;
   },
@@ -1696,84 +1767,133 @@ export const Tournament = {
             break;
           }
 
-          message.appData = reader.bytes();
+          message.communityCode = reader.string();
           continue;
         case 5:
-          if (tag !== 40) {
+          if (tag !== 42) {
             break;
           }
 
-          message.totalParticipants = longToNumber(reader.int64() as Long);
+          message.appData = reader.bytes();
           continue;
         case 6:
           if (tag !== 48) {
             break;
           }
 
-          message.seasonId = longToNumber(reader.int64() as Long);
+          message.totalParticipants = longToNumber(reader.int64() as Long);
           continue;
         case 7:
-          if (tag !== 58) {
+          if (tag !== 56) {
             break;
           }
 
-          message.name = reader.string();
+          message.seasonId = longToNumber(reader.int64() as Long);
           continue;
         case 8:
           if (tag !== 66) {
             break;
           }
 
-          message.description = reader.string();
+          message.name = reader.string();
           continue;
         case 9:
           if (tag !== 74) {
             break;
           }
 
-          message.redTeam = reader.string();
+          message.description = reader.string();
           continue;
         case 10:
           if (tag !== 82) {
             break;
           }
 
-          message.blueTeam = reader.string();
+          message.redTeam = reader.string();
           continue;
         case 11:
-          if (tag !== 88) {
+          if (tag !== 90) {
             break;
           }
 
-          message.repeatType = reader.uint32();
+          message.blueTeam = reader.string();
           continue;
         case 12:
           if (tag !== 96) {
             break;
           }
 
-          message.gamesetNum = reader.uint32();
+          message.repeatType = reader.uint32();
           continue;
         case 13:
           if (tag !== 104) {
             break;
           }
 
-          message.iconType = reader.uint32();
+          message.gamesetNum = reader.uint32();
           continue;
         case 14:
           if (tag !== 112) {
             break;
           }
 
-          message.battleTime = reader.uint32();
+          message.iconType = reader.uint32();
           continue;
         case 15:
           if (tag !== 120) {
             break;
           }
 
+          message.battleTime = reader.uint32();
+          continue;
+        case 16:
+          if (tag !== 128) {
+            break;
+          }
+
           message.updateDate = reader.uint32();
+          continue;
+        case 17:
+          if (tag !== 136) {
+            break;
+          }
+
+          message.startDayTime = reader.uint32();
+          continue;
+        case 18:
+          if (tag !== 144) {
+            break;
+          }
+
+          message.endDayTime = reader.uint32();
+          continue;
+        case 19:
+          if (tag !== 152) {
+            break;
+          }
+
+          message.startTime = reader.uint32();
+          continue;
+        case 20:
+          if (tag !== 160) {
+            break;
+          }
+
+          message.endTime = reader.uint32();
+          continue;
+        case 21:
+          if (tag !== 170) {
+            break;
+          }
+
+          message.startDateTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 22:
+          if (tag !== 178) {
+            break;
+          }
+
+          message.endDateTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1789,6 +1909,7 @@ export const Tournament = {
       id: isSet(object.id) ? Number(object.id) : 0,
       owner: isSet(object.owner) ? Number(object.owner) : 0,
       attributes: Array.isArray(object?.attributes) ? object.attributes.map((e: any) => Number(e)) : [],
+      communityCode: isSet(object.communityCode) ? String(object.communityCode) : "",
       appData: isSet(object.appData) ? bytesFromBase64(object.appData) : new Uint8Array(0),
       totalParticipants: isSet(object.totalParticipants) ? Number(object.totalParticipants) : 0,
       seasonId: isSet(object.seasonId) ? Number(object.seasonId) : 0,
@@ -1801,6 +1922,12 @@ export const Tournament = {
       iconType: isSet(object.iconType) ? Number(object.iconType) : 0,
       battleTime: isSet(object.battleTime) ? Number(object.battleTime) : 0,
       updateDate: isSet(object.updateDate) ? Number(object.updateDate) : 0,
+      startDayTime: isSet(object.startDayTime) ? Number(object.startDayTime) : 0,
+      endDayTime: isSet(object.endDayTime) ? Number(object.endDayTime) : 0,
+      startTime: isSet(object.startTime) ? Number(object.startTime) : 0,
+      endTime: isSet(object.endTime) ? Number(object.endTime) : 0,
+      startDateTime: isSet(object.startDateTime) ? fromJsonTimestamp(object.startDateTime) : undefined,
+      endDateTime: isSet(object.endDateTime) ? fromJsonTimestamp(object.endDateTime) : undefined,
     };
   },
 
@@ -1813,6 +1940,7 @@ export const Tournament = {
     } else {
       obj.attributes = [];
     }
+    message.communityCode !== undefined && (obj.communityCode = message.communityCode);
     message.appData !== undefined &&
       (obj.appData = base64FromBytes(message.appData !== undefined ? message.appData : new Uint8Array(0)));
     message.totalParticipants !== undefined && (obj.totalParticipants = Math.round(message.totalParticipants));
@@ -1826,6 +1954,12 @@ export const Tournament = {
     message.iconType !== undefined && (obj.iconType = Math.round(message.iconType));
     message.battleTime !== undefined && (obj.battleTime = Math.round(message.battleTime));
     message.updateDate !== undefined && (obj.updateDate = Math.round(message.updateDate));
+    message.startDayTime !== undefined && (obj.startDayTime = Math.round(message.startDayTime));
+    message.endDayTime !== undefined && (obj.endDayTime = Math.round(message.endDayTime));
+    message.startTime !== undefined && (obj.startTime = Math.round(message.startTime));
+    message.endTime !== undefined && (obj.endTime = Math.round(message.endTime));
+    message.startDateTime !== undefined && (obj.startDateTime = message.startDateTime.toISOString());
+    message.endDateTime !== undefined && (obj.endDateTime = message.endDateTime.toISOString());
     return obj;
   },
 
@@ -1838,6 +1972,7 @@ export const Tournament = {
     message.id = object.id ?? 0;
     message.owner = object.owner ?? 0;
     message.attributes = object.attributes?.map((e) => e) || [];
+    message.communityCode = object.communityCode ?? "";
     message.appData = object.appData ?? new Uint8Array(0);
     message.totalParticipants = object.totalParticipants ?? 0;
     message.seasonId = object.seasonId ?? 0;
@@ -1850,6 +1985,12 @@ export const Tournament = {
     message.iconType = object.iconType ?? 0;
     message.battleTime = object.battleTime ?? 0;
     message.updateDate = object.updateDate ?? 0;
+    message.startDayTime = object.startDayTime ?? 0;
+    message.endDayTime = object.endDayTime ?? 0;
+    message.startTime = object.startTime ?? 0;
+    message.endTime = object.endTime ?? 0;
+    message.startDateTime = object.startDateTime ?? undefined;
+    message.endDateTime = object.endDateTime ?? undefined;
     return message;
   },
 };
@@ -1987,6 +2128,404 @@ export const GetAllTournamentsResponse = {
   },
 };
 
+function createBaseGetUnlocksRequest(): GetUnlocksRequest {
+  return { pid: 0 };
+}
+
+export const GetUnlocksRequest = {
+  encode(message: GetUnlocksRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.pid !== 0) {
+      writer.uint32(8).uint32(message.pid);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetUnlocksRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetUnlocksRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.pid = reader.uint32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetUnlocksRequest {
+    return { pid: isSet(object.pid) ? Number(object.pid) : 0 };
+  },
+
+  toJSON(message: GetUnlocksRequest): unknown {
+    const obj: any = {};
+    message.pid !== undefined && (obj.pid = Math.round(message.pid));
+    return obj;
+  },
+
+  create(base?: DeepPartial<GetUnlocksRequest>): GetUnlocksRequest {
+    return GetUnlocksRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial(object: DeepPartial<GetUnlocksRequest>): GetUnlocksRequest {
+    const message = createBaseGetUnlocksRequest();
+    message.pid = object.pid ?? 0;
+    return message;
+  },
+};
+
+function createBaseGetUnlocksResponse(): GetUnlocksResponse {
+  return {
+    hasData: false,
+    vrRate: 0,
+    brRate: 0,
+    lastUpdate: undefined,
+    gpUnlocks: [],
+    engineUnlocks: [],
+    driverUnlocks: [],
+    bodyUnlocks: [],
+    tireUnlocks: [],
+    wingUnlocks: [],
+    stampUnlocks: [],
+    dlcUnlocks: [],
+  };
+}
+
+export const GetUnlocksResponse = {
+  encode(message: GetUnlocksResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.hasData === true) {
+      writer.uint32(8).bool(message.hasData);
+    }
+    if (message.vrRate !== 0) {
+      writer.uint32(17).double(message.vrRate);
+    }
+    if (message.brRate !== 0) {
+      writer.uint32(25).double(message.brRate);
+    }
+    if (message.lastUpdate !== undefined) {
+      Timestamp.encode(toTimestamp(message.lastUpdate), writer.uint32(34).fork()).ldelim();
+    }
+    writer.uint32(42).fork();
+    for (const v of message.gpUnlocks) {
+      writer.uint32(v);
+    }
+    writer.ldelim();
+    writer.uint32(50).fork();
+    for (const v of message.engineUnlocks) {
+      writer.uint32(v);
+    }
+    writer.ldelim();
+    writer.uint32(58).fork();
+    for (const v of message.driverUnlocks) {
+      writer.uint32(v);
+    }
+    writer.ldelim();
+    writer.uint32(66).fork();
+    for (const v of message.bodyUnlocks) {
+      writer.uint32(v);
+    }
+    writer.ldelim();
+    writer.uint32(74).fork();
+    for (const v of message.tireUnlocks) {
+      writer.uint32(v);
+    }
+    writer.ldelim();
+    writer.uint32(82).fork();
+    for (const v of message.wingUnlocks) {
+      writer.uint32(v);
+    }
+    writer.ldelim();
+    writer.uint32(90).fork();
+    for (const v of message.stampUnlocks) {
+      writer.uint32(v);
+    }
+    writer.ldelim();
+    writer.uint32(98).fork();
+    for (const v of message.dlcUnlocks) {
+      writer.uint32(v);
+    }
+    writer.ldelim();
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetUnlocksResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetUnlocksResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.hasData = reader.bool();
+          continue;
+        case 2:
+          if (tag !== 17) {
+            break;
+          }
+
+          message.vrRate = reader.double();
+          continue;
+        case 3:
+          if (tag !== 25) {
+            break;
+          }
+
+          message.brRate = reader.double();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.lastUpdate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 5:
+          if (tag === 40) {
+            message.gpUnlocks.push(reader.uint32());
+
+            continue;
+          }
+
+          if (tag === 42) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.gpUnlocks.push(reader.uint32());
+            }
+
+            continue;
+          }
+
+          break;
+        case 6:
+          if (tag === 48) {
+            message.engineUnlocks.push(reader.uint32());
+
+            continue;
+          }
+
+          if (tag === 50) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.engineUnlocks.push(reader.uint32());
+            }
+
+            continue;
+          }
+
+          break;
+        case 7:
+          if (tag === 56) {
+            message.driverUnlocks.push(reader.uint32());
+
+            continue;
+          }
+
+          if (tag === 58) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.driverUnlocks.push(reader.uint32());
+            }
+
+            continue;
+          }
+
+          break;
+        case 8:
+          if (tag === 64) {
+            message.bodyUnlocks.push(reader.uint32());
+
+            continue;
+          }
+
+          if (tag === 66) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.bodyUnlocks.push(reader.uint32());
+            }
+
+            continue;
+          }
+
+          break;
+        case 9:
+          if (tag === 72) {
+            message.tireUnlocks.push(reader.uint32());
+
+            continue;
+          }
+
+          if (tag === 74) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.tireUnlocks.push(reader.uint32());
+            }
+
+            continue;
+          }
+
+          break;
+        case 10:
+          if (tag === 80) {
+            message.wingUnlocks.push(reader.uint32());
+
+            continue;
+          }
+
+          if (tag === 82) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.wingUnlocks.push(reader.uint32());
+            }
+
+            continue;
+          }
+
+          break;
+        case 11:
+          if (tag === 88) {
+            message.stampUnlocks.push(reader.uint32());
+
+            continue;
+          }
+
+          if (tag === 90) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.stampUnlocks.push(reader.uint32());
+            }
+
+            continue;
+          }
+
+          break;
+        case 12:
+          if (tag === 96) {
+            message.dlcUnlocks.push(reader.uint32());
+
+            continue;
+          }
+
+          if (tag === 98) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.dlcUnlocks.push(reader.uint32());
+            }
+
+            continue;
+          }
+
+          break;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetUnlocksResponse {
+    return {
+      hasData: isSet(object.hasData) ? Boolean(object.hasData) : false,
+      vrRate: isSet(object.vrRate) ? Number(object.vrRate) : 0,
+      brRate: isSet(object.brRate) ? Number(object.brRate) : 0,
+      lastUpdate: isSet(object.lastUpdate) ? fromJsonTimestamp(object.lastUpdate) : undefined,
+      gpUnlocks: Array.isArray(object?.gpUnlocks) ? object.gpUnlocks.map((e: any) => Number(e)) : [],
+      engineUnlocks: Array.isArray(object?.engineUnlocks) ? object.engineUnlocks.map((e: any) => Number(e)) : [],
+      driverUnlocks: Array.isArray(object?.driverUnlocks) ? object.driverUnlocks.map((e: any) => Number(e)) : [],
+      bodyUnlocks: Array.isArray(object?.bodyUnlocks) ? object.bodyUnlocks.map((e: any) => Number(e)) : [],
+      tireUnlocks: Array.isArray(object?.tireUnlocks) ? object.tireUnlocks.map((e: any) => Number(e)) : [],
+      wingUnlocks: Array.isArray(object?.wingUnlocks) ? object.wingUnlocks.map((e: any) => Number(e)) : [],
+      stampUnlocks: Array.isArray(object?.stampUnlocks) ? object.stampUnlocks.map((e: any) => Number(e)) : [],
+      dlcUnlocks: Array.isArray(object?.dlcUnlocks) ? object.dlcUnlocks.map((e: any) => Number(e)) : [],
+    };
+  },
+
+  toJSON(message: GetUnlocksResponse): unknown {
+    const obj: any = {};
+    message.hasData !== undefined && (obj.hasData = message.hasData);
+    message.vrRate !== undefined && (obj.vrRate = message.vrRate);
+    message.brRate !== undefined && (obj.brRate = message.brRate);
+    message.lastUpdate !== undefined && (obj.lastUpdate = message.lastUpdate.toISOString());
+    if (message.gpUnlocks) {
+      obj.gpUnlocks = message.gpUnlocks.map((e) => Math.round(e));
+    } else {
+      obj.gpUnlocks = [];
+    }
+    if (message.engineUnlocks) {
+      obj.engineUnlocks = message.engineUnlocks.map((e) => Math.round(e));
+    } else {
+      obj.engineUnlocks = [];
+    }
+    if (message.driverUnlocks) {
+      obj.driverUnlocks = message.driverUnlocks.map((e) => Math.round(e));
+    } else {
+      obj.driverUnlocks = [];
+    }
+    if (message.bodyUnlocks) {
+      obj.bodyUnlocks = message.bodyUnlocks.map((e) => Math.round(e));
+    } else {
+      obj.bodyUnlocks = [];
+    }
+    if (message.tireUnlocks) {
+      obj.tireUnlocks = message.tireUnlocks.map((e) => Math.round(e));
+    } else {
+      obj.tireUnlocks = [];
+    }
+    if (message.wingUnlocks) {
+      obj.wingUnlocks = message.wingUnlocks.map((e) => Math.round(e));
+    } else {
+      obj.wingUnlocks = [];
+    }
+    if (message.stampUnlocks) {
+      obj.stampUnlocks = message.stampUnlocks.map((e) => Math.round(e));
+    } else {
+      obj.stampUnlocks = [];
+    }
+    if (message.dlcUnlocks) {
+      obj.dlcUnlocks = message.dlcUnlocks.map((e) => Math.round(e));
+    } else {
+      obj.dlcUnlocks = [];
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<GetUnlocksResponse>): GetUnlocksResponse {
+    return GetUnlocksResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial(object: DeepPartial<GetUnlocksResponse>): GetUnlocksResponse {
+    const message = createBaseGetUnlocksResponse();
+    message.hasData = object.hasData ?? false;
+    message.vrRate = object.vrRate ?? 0;
+    message.brRate = object.brRate ?? 0;
+    message.lastUpdate = object.lastUpdate ?? undefined;
+    message.gpUnlocks = object.gpUnlocks?.map((e) => e) || [];
+    message.engineUnlocks = object.engineUnlocks?.map((e) => e) || [];
+    message.driverUnlocks = object.driverUnlocks?.map((e) => e) || [];
+    message.bodyUnlocks = object.bodyUnlocks?.map((e) => e) || [];
+    message.tireUnlocks = object.tireUnlocks?.map((e) => e) || [];
+    message.wingUnlocks = object.wingUnlocks?.map((e) => e) || [];
+    message.stampUnlocks = object.stampUnlocks?.map((e) => e) || [];
+    message.dlcUnlocks = object.dlcUnlocks?.map((e) => e) || [];
+    return message;
+  },
+};
+
 export type AmkjServiceDefinition = typeof AmkjServiceDefinition;
 export const AmkjServiceDefinition = {
   name: "AmkjService",
@@ -2088,6 +2627,14 @@ export const AmkjServiceDefinition = {
       responseStream: false,
       options: {},
     },
+    getUnlocks: {
+      name: "GetUnlocks",
+      requestType: GetUnlocksRequest,
+      requestStream: false,
+      responseType: GetUnlocksResponse,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
@@ -2137,6 +2684,10 @@ export interface AmkjServiceImplementation<CallContextExt = {}> {
     request: GetAllTournamentsRequest,
     context: CallContext & CallContextExt,
   ): Promise<DeepPartial<GetAllTournamentsResponse>>;
+  getUnlocks(
+    request: GetUnlocksRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<DeepPartial<GetUnlocksResponse>>;
 }
 
 export interface AmkjServiceClient<CallOptionsExt = {}> {
@@ -2185,6 +2736,10 @@ export interface AmkjServiceClient<CallOptionsExt = {}> {
     request: DeepPartial<GetAllTournamentsRequest>,
     options?: CallOptions & CallOptionsExt,
   ): Promise<GetAllTournamentsResponse>;
+  getUnlocks(
+    request: DeepPartial<GetUnlocksRequest>,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<GetUnlocksResponse>;
 }
 
 declare var self: any | undefined;

@@ -4,9 +4,13 @@ import Link from 'next/link';
 import { GetServerStatusResponse } from '@/helpers/proto/amkj_service';
 import { useEffect, useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
-import { StaticPopover } from './StaticPopover';
+import { StaticToast } from './StaticToast';
 
-export const NEXStatus = () => {
+export interface NEXStatusProps {
+    responseHeaderCallback?: (headers: Headers) => void;
+}
+
+export const NEXStatus: React.FC<NEXStatusProps> = ({ responseHeaderCallback }) => {
 
     const [statusResponse, setStatusResponse] = useState<Response | null>(null);
     const [nexStatus, setNEXStatus] = useState<GetServerStatusResponse | null>(null);
@@ -30,10 +34,17 @@ export const NEXStatus = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    useEffect(() => {
+        if (responseHeaderCallback && statusResponse) {
+            responseHeaderCallback(statusResponse.headers);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [statusResponse]);
+
 
     if (!statusResponse) {
         return (
-            <StaticPopover
+            <StaticToast
                 title={
                     <strong className="me-auto">Fetching server status</strong>
                 }
@@ -44,7 +55,7 @@ export const NEXStatus = () => {
     } else {
         if (statusResponse.status != 200 || !nexStatus) {
             return (
-                <StaticPopover
+                <StaticToast
                     title={
                         <strong className="me-auto">🔴 Error fetching server status</strong>
                     }
@@ -85,7 +96,7 @@ export const NEXStatus = () => {
                     }
                 }
                 return (
-                    <StaticPopover
+                    <StaticToast
                         title={
                             <strong className="me-auto">{text}</strong>
                         }
@@ -101,7 +112,7 @@ export const NEXStatus = () => {
                 );
             } else if (nexStatus.isWhitelist) {
                 return (
-                    <StaticPopover
+                    <StaticToast
                         title={
                             <strong className="me-auto">⚫ Whitelist mode</strong>
                         }
@@ -118,7 +129,7 @@ export const NEXStatus = () => {
                 );
             } else {
                 return (
-                    <StaticPopover
+                    <StaticToast
                         title={
                             <strong className="me-auto">🟢 {`Online with ${nexStatus.numClients} player${(nexStatus.numClients == 0 || nexStatus.numClients > 1) ? 's' : ''}`}</strong>
                         }

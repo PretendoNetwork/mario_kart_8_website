@@ -40,7 +40,7 @@ export const GatheringEntry: React.FC<GatheringEntryProps> = ({ gathering }) => 
     }
 
     const popover = (
-        <Popover id="popover-basic" className="text-center">
+        <Popover className="text-center">
             <Popover.Body>
                 <Table striped bordered hover>
                     <thead>

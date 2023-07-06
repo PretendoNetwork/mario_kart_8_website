@@ -1,4 +1,4 @@
-import { NEXStatus } from '@/components/NEXStatus';
+import Footer from '@/components/Footer';
 import NavigationBar from '@/components/NavigationBar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -17,7 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 						{children}
 					</div>
 				</div>
-				<NEXStatus />
+				<Footer />
 			</body>
 		</html>
 	)
