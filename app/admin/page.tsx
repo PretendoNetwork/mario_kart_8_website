@@ -99,8 +99,8 @@ const AdminPage = () => {
 
     return (
         <>
-            <div className="container-fluid m-5 h-100 d-flex justify-content-center align-items-center">
-                <form className="text-center w-100 bg-light p-5 rounded-1 shadow-lg">
+            <div className="container-fluid mt-5 mb-3 h-100 p-0 d-flex justify-content-center align-items-center">
+                <form className="text-center w-100 p-5 bg-light shadow-lg">
                     <h1 className="mb-3">Adminstration panel</h1>
                     <Alert variant="info">All datetimes you enter should be in your local time, they are automatically transformed to UTC.</Alert>
                     <InputGroup className="mb-3 justify-content-center align-items-center">

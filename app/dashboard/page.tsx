@@ -151,8 +151,8 @@ const DashboardPage = () => {
 
     return (
         <>
-            <div className="container-fluid m-5 h-100 d-flex justify-content-center align-items-center">
-                <form className="text-center w-100 bg-light p-5 rounded-1 shadow-lg">
+            <div className="container-fluid mt-5 mb-3 h-100 p-0 d-flex justify-content-center align-items-center">
+                <form className="text-center w-100 p-5 bg-light shadow-lg">
                     <h1 className="mb-3">User dashboard</h1>
                     <div>
                         {getPageJSX()}

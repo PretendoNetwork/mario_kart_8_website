@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import Image from "next/image";
@@ -5,47 +6,44 @@ import Link from "next/link";
 import { Alert, Badge, Carousel, ListGroup, Tab, Tabs } from "react-bootstrap";
 
 const HomePage = () => {
+    const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
     return (
-        <div className="container-fluid m-5 h-100 d-flex justify-content-center align-items-center">
-            <form className="text-center w-100 bg-light p-5 rounded-1 shadow-lg">
+        <div className="container-fluid mt-5 mb-3 h-100 p-0 d-flex justify-content-center align-items-center">
+            <form className="text-center w-100 p-5 bg-light shadow-lg">
                 <h1 className="mb-3">Welcome to the Pretendo Mario Kart 8 website</h1>
                 <h6><small className="text-muted">A full game server replacement for MK8</small></h6>
                 <Tabs defaultActiveKey="home" className="mb-3">
                     <Tab eventKey="home" title="Overview">
-                        <Carousel variant="dark">
+                        <Carousel>
                             <Carousel.Item>
-                                <Image
+                                <img
                                     src="/compe1.png"
-                                    alt="First slide"
-                                    width={1280}
-                                    height={720}
+                                    alt="Tournament being played"
+                                    className="d-block w-100"
                                 />
                                 <Carousel.Caption>
-                                    <Badge bg="dark"><h3 className="m-2">Tournament rankings example</h3></Badge>
+                                    <h3>Tournaments are now here</h3>
                                 </Carousel.Caption>
                             </Carousel.Item>
                             <Carousel.Item>
-                                <Image
+                                <img
                                     src="/mktv1.png"
-                                    alt="Second slide"
-                                    width={1280}
-                                    height={720}
+                                    alt="Tournament being played"
+                                    className="d-block w-100"
                                 />
-
                                 <Carousel.Caption>
-                                    <Badge bg="dark"><h3 className="m-2">Mario Kart TV finally works again!</h3></Badge>
+                                    <h3>Mario Kart TV is now functional!</h3>
                                 </Carousel.Caption>
                             </Carousel.Item>
                             <Carousel.Item>
-                                <Image
+                                <img
                                     src="/compe2.png"
-                                    alt="Third slide"
-                                    width={1280}
-                                    height={720}
+                                    alt="Tournament being played"
+                                    className="d-block w-100"
                                 />
-
                                 <Carousel.Caption>
-                                    <Badge bg="dark"><h3 className="m-2">Tournament rankings with teams!</h3><p>{"I'm aware the count doesn't match, and the bug is fixed."}</p></Badge>
+                                    <h3>Tournament rankings in a team tournament!</h3>
+                                    <p>{"(I know the count doesn't match and it's already fixed)"}</p>
                                 </Carousel.Caption>
                             </Carousel.Item>
                         </Carousel>
@@ -73,7 +71,7 @@ const HomePage = () => {
                     <Tab eventKey="features" title="Features">
                         <h3>{"What's implemented ?"}</h3>
 
-                        <div className="mx-auto w-75">
+                        <div className={`mx-auto ${(vw < 450 && 'w-auto') || (vw < 1000 && 'w-75') || ('w-50')}`}>
                             <ListGroup className="mb-3">
                                 <strong>
                                     <ListGroup.Item variant="primary">Works for everyone</ListGroup.Item>
