@@ -42,8 +42,14 @@ export async function middleware(request: NextRequest) {
     }
 
     if (nextPathname.startsWith('/api/admin')) {
-        if (mk8_token && mk8_token.access_level >= 3) {
-            return NextResponse.next();
+        if (mk8_token) {
+            if (nextPathname.startsWith('/api/admin/userdata')) {
+                return NextResponse.next();
+            } else if (mk8_token.access_level >= 3) {
+                return NextResponse.next();
+            } else {
+                return new NextResponse("{}", { status: 401 });
+            }
         } else {
             return new NextResponse("{}", { status: 401 });
         }
