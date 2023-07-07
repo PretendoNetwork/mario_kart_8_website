@@ -1,12 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 
-import Image from "next/image";
 import Link from "next/link";
 import { Alert, Badge, Carousel, ListGroup, Tab, Tabs } from "react-bootstrap";
 
 const HomePage = () => {
-    const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
     return (
         <div className="container-fluid mt-5 mb-3 h-100 p-0 d-flex justify-content-center align-items-center">
             <form className="text-center w-100 p-5 bg-light shadow-lg">
@@ -64,7 +62,7 @@ const HomePage = () => {
                     <Tab eventKey="features" title="Features">
                         <h3>{"What's implemented ?"}</h3>
 
-                        <div className={`mx-auto ${(vw < 450 && 'w-auto') || (vw < 1000 && 'w-75') || ('w-50')}`}>
+                        <div className={`mx-auto w-auto`}>
                             <ListGroup className="mb-3">
                                 <strong>
                                     <ListGroup.Item variant="primary">Works for everyone</ListGroup.Item>
