@@ -14,37 +14,30 @@ const HomePage = () => {
                 <h6><small className="text-muted">A full game server replacement for MK8</small></h6>
                 <Tabs defaultActiveKey="home" className="mb-3">
                     <Tab eventKey="home" title="Overview">
-                        <Carousel>
+                        <Carousel className="mb-3" variant="dark">
                             <Carousel.Item>
                                 <img
                                     src="/compe1.png"
                                     alt="Tournament being played"
-                                    className="d-block w-100"
+                                    className="d-block w-100 mx-auto"
+                                    style={{ maxHeight: "720px", maxWidth: "1280px" }}
                                 />
-                                <Carousel.Caption>
-                                    <h3>Tournaments are now here</h3>
-                                </Carousel.Caption>
                             </Carousel.Item>
                             <Carousel.Item>
                                 <img
                                     src="/mktv1.png"
                                     alt="Tournament being played"
-                                    className="d-block w-100"
+                                    className="d-block w-100 mx-auto"
+                                    style={{ maxHeight: "720px", maxWidth: "1280px" }}
                                 />
-                                <Carousel.Caption>
-                                    <h3>Mario Kart TV is now functional!</h3>
-                                </Carousel.Caption>
                             </Carousel.Item>
                             <Carousel.Item>
                                 <img
                                     src="/compe2.png"
                                     alt="Tournament being played"
-                                    className="d-block w-100"
+                                    className="d-block w-100 mx-auto"
+                                    style={{ maxHeight: "720px", maxWidth: "1280px" }}
                                 />
-                                <Carousel.Caption>
-                                    <h3>Tournament rankings in a team tournament!</h3>
-                                    <p>{"(I know the count doesn't match and it's already fixed)"}</p>
-                                </Carousel.Caption>
                             </Carousel.Item>
                         </Carousel>
                         <p>{"Astute readers may have noticed how I (Rambo6Glaz) won both tournaments."}</p>
@@ -126,13 +119,16 @@ const HomePage = () => {
                             <hr />
                         </div>
                     </Tab>
-                    <Tab eventKey="contact" title="CEMU Users">
+                    <Tab eventKey="contact" title="CEMU">
                         <Alert variant="info">
                             <p>• Use CEMU 2.0-43 experimental or higher</p>
                             <p>• {"We don't support piracy and we recommend dumping files from your own console."}</p>
                             <p>• {"Files downloaded from the website aren't supported anymore"}</p>
+                            <p>• {"If you have unstable frames, plesase don't go online, it ruins the experience for everyone, if it happens too much you will be banned."}</p>
                         </Alert>
-
+                        <Alert>
+                            <p>The server is available on console and CEMU, follow the tutorial on <Link href="https://pretendo.network">the website</Link> to get Pretendo Network on your device.</p>
+                        </Alert>
                     </Tab>
                 </Tabs>
 
