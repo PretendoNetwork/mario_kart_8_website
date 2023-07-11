@@ -15,6 +15,14 @@ const HomePage = () => {
                         <Carousel className="mb-3" variant="dark">
                             <Carousel.Item>
                                 <img
+                                    src="/session1.png"
+                                    alt="Lots of nostalgia"
+                                    className="d-block w-100 mx-auto"
+                                    style={{ maxHeight: "720px", maxWidth: "1280px" }}
+                                />
+                            </Carousel.Item>
+                            <Carousel.Item>
+                                <img
                                     src="/compe1.png"
                                     alt="Tournament being played"
                                     className="d-block w-100 mx-auto"
