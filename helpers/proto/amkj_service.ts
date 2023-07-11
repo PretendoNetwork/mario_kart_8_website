@@ -82,6 +82,11 @@ export interface KickAllUsersResponse {
   numKicked: number;
 }
 
+export interface GatheringParticipant {
+  pid: number;
+  miiName: string;
+}
+
 export interface Gathering {
   gid: number;
   host: number;
@@ -89,7 +94,7 @@ export interface Gathering {
   attributes: number[];
   gameMode: number;
   appData: Uint8Array;
-  players: number[];
+  players: GatheringParticipant[];
   minParticipants: number;
   maxParticipants: number;
 }
@@ -1286,6 +1291,77 @@ export const KickAllUsersResponse = {
   },
 };
 
+function createBaseGatheringParticipant(): GatheringParticipant {
+  return { pid: 0, miiName: "" };
+}
+
+export const GatheringParticipant = {
+  encode(message: GatheringParticipant, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.pid !== 0) {
+      writer.uint32(8).int64(message.pid);
+    }
+    if (message.miiName !== "") {
+      writer.uint32(18).string(message.miiName);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GatheringParticipant {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGatheringParticipant();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.pid = longToNumber(reader.int64() as Long);
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.miiName = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GatheringParticipant {
+    return {
+      pid: isSet(object.pid) ? Number(object.pid) : 0,
+      miiName: isSet(object.miiName) ? String(object.miiName) : "",
+    };
+  },
+
+  toJSON(message: GatheringParticipant): unknown {
+    const obj: any = {};
+    message.pid !== undefined && (obj.pid = Math.round(message.pid));
+    message.miiName !== undefined && (obj.miiName = message.miiName);
+    return obj;
+  },
+
+  create(base?: DeepPartial<GatheringParticipant>): GatheringParticipant {
+    return GatheringParticipant.fromPartial(base ?? {});
+  },
+
+  fromPartial(object: DeepPartial<GatheringParticipant>): GatheringParticipant {
+    const message = createBaseGatheringParticipant();
+    message.pid = object.pid ?? 0;
+    message.miiName = object.miiName ?? "";
+    return message;
+  },
+};
+
 function createBaseGathering(): Gathering {
   return {
     gid: 0,
@@ -1322,11 +1398,9 @@ export const Gathering = {
     if (message.appData.length !== 0) {
       writer.uint32(50).bytes(message.appData);
     }
-    writer.uint32(58).fork();
     for (const v of message.players) {
-      writer.int64(v);
+      GatheringParticipant.encode(v!, writer.uint32(58).fork()).ldelim();
     }
-    writer.ldelim();
     if (message.minParticipants !== 0) {
       writer.uint32(64).uint32(message.minParticipants);
     }
@@ -1396,22 +1470,12 @@ export const Gathering = {
           message.appData = reader.bytes();
           continue;
         case 7:
-          if (tag === 56) {
-            message.players.push(longToNumber(reader.int64() as Long));
-
-            continue;
+          if (tag !== 58) {
+            break;
           }
 
-          if (tag === 58) {
-            const end2 = reader.uint32() + reader.pos;
-            while (reader.pos < end2) {
-              message.players.push(longToNumber(reader.int64() as Long));
-            }
-
-            continue;
-          }
-
-          break;
+          message.players.push(GatheringParticipant.decode(reader, reader.uint32()));
+          continue;
         case 8:
           if (tag !== 64) {
             break;
@@ -1443,7 +1507,7 @@ export const Gathering = {
       attributes: Array.isArray(object?.attributes) ? object.attributes.map((e: any) => Number(e)) : [],
       gameMode: isSet(object.gameMode) ? Number(object.gameMode) : 0,
       appData: isSet(object.appData) ? bytesFromBase64(object.appData) : new Uint8Array(0),
-      players: Array.isArray(object?.players) ? object.players.map((e: any) => Number(e)) : [],
+      players: Array.isArray(object?.players) ? object.players.map((e: any) => GatheringParticipant.fromJSON(e)) : [],
       minParticipants: isSet(object.minParticipants) ? Number(object.minParticipants) : 0,
       maxParticipants: isSet(object.maxParticipants) ? Number(object.maxParticipants) : 0,
     };
@@ -1463,7 +1527,7 @@ export const Gathering = {
     message.appData !== undefined &&
       (obj.appData = base64FromBytes(message.appData !== undefined ? message.appData : new Uint8Array(0)));
     if (message.players) {
-      obj.players = message.players.map((e) => Math.round(e));
+      obj.players = message.players.map((e) => e ? GatheringParticipant.toJSON(e) : undefined);
     } else {
       obj.players = [];
     }
@@ -1484,7 +1548,7 @@ export const Gathering = {
     message.attributes = object.attributes?.map((e) => e) || [];
     message.gameMode = object.gameMode ?? 0;
     message.appData = object.appData ?? new Uint8Array(0);
-    message.players = object.players?.map((e) => e) || [];
+    message.players = object.players?.map((e) => GatheringParticipant.fromPartial(e)) || [];
     message.minParticipants = object.minParticipants ?? 0;
     message.maxParticipants = object.maxParticipants ?? 0;
     return message;

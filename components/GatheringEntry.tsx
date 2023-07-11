@@ -47,6 +47,7 @@ export const GatheringEntry: React.FC<GatheringEntryProps> = ({ gathering }) => 
                         <tr>
                             <th>#</th>
                             <th>{"Player (PID)"}</th>
+                            <th>{"Mii name"}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,7 +55,8 @@ export const GatheringEntry: React.FC<GatheringEntryProps> = ({ gathering }) => 
                             return (
                                 <tr key={`gat${gathering.gid}_p${idx}`}>
                                     <td>{idx + 1}</td>
-                                    <td>{(player < 0) ? `Guest of ${Math.abs(player)}` : `${player}`}</td>
+                                    <td>{(player.pid < 0) ? `Guest of ${Math.abs(player.pid)}` : `${player.pid}`}</td>
+                                    <td>{player.miiName}</td>
                                 </tr>
                             )
                         })}

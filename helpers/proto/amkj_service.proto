@@ -105,6 +105,11 @@ message KickAllUsersResponse {
 
 // ========================================================
 
+message GatheringParticipant {
+    int64 pid = 1;
+    string mii_name = 2;
+}
+
 message Gathering {
     uint32 gid = 1;
     uint32 host = 2;
@@ -112,7 +117,7 @@ message Gathering {
     repeated uint32 attributes = 4;
     uint32 game_mode = 5;
     bytes app_data = 6;
-    repeated int64 players = 7;
+    repeated GatheringParticipant players = 7;
     uint32 min_participants = 8;
     uint32 max_participants = 9;
 }
