@@ -25,6 +25,8 @@ service AmkjService {
     rpc GetAllTournaments(GetAllTournamentsRequest) returns (GetAllTournamentsResponse) {}
 
     rpc GetUnlocks(GetUnlocksRequest) returns (GetUnlocksResponse) {}
+
+    rpc GetTimeTrialRanking(GetTimeTrialRankingRequest) returns (GetTimeTrialRankingResponse) {}
 }
 
 // ========================================================
@@ -185,4 +187,24 @@ message GetUnlocksResponse {
     repeated uint32 wing_unlocks = 10;
     repeated uint32 stamp_unlocks = 11;
     repeated uint32 dlc_unlocks = 12;
+}
+
+// ========================================================
+
+message TimeTrialRanking {
+    uint32 rank = 1;
+    google.protobuf.Timestamp datetime = 2;
+    uint32 score = 3;
+    uint32 pid = 4;
+    bytes common_data = 5;
+}
+
+message GetTimeTrialRankingRequest {
+    uint32 track = 1;
+    int32 limit = 2;
+    bool asc = 3;
+}
+
+message GetTimeTrialRankingResponse {
+    repeated TimeTrialRanking rankings = 1;
 }
