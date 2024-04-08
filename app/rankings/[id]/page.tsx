@@ -61,7 +61,12 @@ export default function TrackRankingPage({ params }: { params: { id: string } })
 
         let name = "";
         for (let i = 0; i < 10; i++) {
-            name += String.fromCharCode(mii_name[i * 2] | mii_name[(i * 2) + 1] << 8);
+            var c = mii_name[i * 2] | mii_name[(i * 2) + 1] << 8;
+            if (c === 0) {
+                break;
+            }
+
+            name += String.fromCharCode(c);
         }
 
         return name;
