@@ -3,15 +3,49 @@
 import { TournamentEntry } from '@/components/TournamentEntry';
 import { Tournament } from '@/helpers/proto/amkj_service';
 import { useEffect, useState } from 'react';
-import { Alert, Spinner } from 'react-bootstrap';
+import { Alert, Form, InputGroup, Pagination, Spinner } from 'react-bootstrap';
+import { FaSearch } from "react-icons/fa";
 
 export default function TournamentsPage() {
 
     const updateTime = 20;
+    const entryPerPage = 10;
 
+    const [searchTerm, setSearchTerm] = useState<string>('');
+    const [currentPage, setCurrentPage] = useState<number>(0);
     const [allTournamentsResponse, setAllTournamentsResponse] = useState<Response | null>(null);
     const [allTournaments, setAllTournaments] = useState<Tournament[]>([]);
     const [timer, setTimer] = useState<number>(updateTime - 1);
+
+    let tournamentPool = allTournaments.filter((tournament) => (tournament.name.includes(searchTerm) || tournament.communityCode.includes(searchTerm)));
+
+    let maxPage = 0;
+    let tournamentPage: Tournament[] = [];
+    let tournamentPaginationJSX = [];
+    if (tournamentPool.length > 0) {
+        maxPage = Math.ceil(tournamentPool.length / entryPerPage);
+        tournamentPage = tournamentPool.slice(currentPage * entryPerPage, (currentPage + 1) * entryPerPage);
+
+        if (currentPage >= maxPage) setCurrentPage(0);
+
+        if (maxPage >= 0) {
+            tournamentPaginationJSX.push(
+                <Pagination key="tournamentPagination" className="mt-3 d-flex flex-wrap justify-content-center">
+                    <Pagination.Prev onClick={() => setCurrentPage((currentPage) => currentPage - 1)} disabled={currentPage === 0} />
+                    {
+                        Array.from({ length: maxPage }, (_, idx) => {
+                            return (
+                                <Pagination.Item key={idx} active={currentPage === idx} onClick={() => setCurrentPage(idx)}>
+                                    {idx + 1}
+                                </Pagination.Item>
+                            );
+                        })
+                    }
+                    <Pagination.Next onClick={() => setCurrentPage((currentPage) => currentPage + 1)} disabled={currentPage === maxPage - 1} />
+                </Pagination>
+            );
+        }
+    }
 
     const fetchAllTournaments = async () => {
         try {
@@ -67,7 +101,7 @@ export default function TournamentsPage() {
                     </Alert>
                 );
             } else {
-                if (allTournaments.length > 0) {
+                if (tournamentPool.length > 0) {
                     return (
                         <>
                             <Alert variant="info">
@@ -77,9 +111,20 @@ export default function TournamentsPage() {
                                 <p>• Your account was registered in a different timezone</p>
                                 <p>• You are using an outdated CEMU version, please use <strong>2.0-43 or higher</strong>.</p>
                             </Alert>
+                            <InputGroup className="mb-3 mx-auto" style={{ maxWidth: "18rem" }}>
+                                <InputGroup.Text id="search-term"><FaSearch /></InputGroup.Text>
+                                <Form.Control
+                                    placeholder="Filter by name or code..."
+                                    aria-label="search-term"
+                                    aria-describedby="search-term"
+                                    value={searchTerm}
+                                    onChange={(event) => setSearchTerm(event.target.value)}
+                                />
+                            </InputGroup>
+                            <div className="mx-auto">{tournamentPaginationJSX}</div>
                             <div className="d-flex flex-column justify-content-center align-items-center">
                                 {
-                                    allTournaments.map((tournament, idx) => {
+                                    tournamentPage.map((tournament, idx) => {
                                         return (
                                             <div className="ms-5 me-5 mb-3" key={idx}>
                                                 <TournamentEntry tournament={tournament} />
@@ -88,17 +133,31 @@ export default function TournamentsPage() {
                                     })
                                 }
                             </div>
+                            <div className="mx-auto">{tournamentPaginationJSX}</div>
                         </>
                     );
                 } else {
                     return (
-                        <Alert variant="primary" onClick={() => { document.location.reload() }}>
-                            <Alert.Heading>No tournaments!</Alert.Heading>
-                            <hr />
-                            <p>
-                                This means no tournaments were registered yet.
-                            </p>
-                        </Alert>
+                        <div>
+                            <InputGroup className="mb-3 mx-auto" style={{ maxWidth: "18rem" }}>
+                                <InputGroup.Text id="search-term"><FaSearch /></InputGroup.Text>
+                                <Form.Control
+                                    placeholder="Filter by name or code..."
+                                    aria-label="search-term"
+                                    aria-describedby="search-term"
+                                    value={searchTerm}
+                                    onChange={(event) => setSearchTerm(event.target.value)}
+                                />
+                            </InputGroup>
+
+                            <Alert variant="primary" onClick={() => { document.location.reload() }}>
+                                <Alert.Heading>No tournaments!</Alert.Heading>
+                                <hr />
+                                <p>
+                                    This means no tournaments matches your search or that no tournaments were registered yet.
+                                </p>
+                            </Alert>
+                        </div>
                     )
                 }
             }
