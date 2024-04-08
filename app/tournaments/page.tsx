@@ -21,7 +21,7 @@ export default function TournamentsPage() {
 
     let maxPage = 0;
     let tournamentPage: Tournament[] = [];
-    let tournamentPaginationJSX = [];
+    let tournamentPaginationJSX: any[] = [];
     if (tournamentPool.length > 0) {
         maxPage = Math.ceil(tournamentPool.length / entryPerPage);
         tournamentPage = tournamentPool.slice(currentPage * entryPerPage, (currentPage + 1) * entryPerPage);

@@ -54,14 +54,14 @@ export default function TrackRankingPage({ params }: { params: { id: string } })
     }
 
     function commonDataToMiiName(data: { data: number[] }): string {
+
         const str = data.data;
         const account_related_data = str.slice(0x14, 0x74);
         const mii_name = account_related_data.slice(0x1a, 0x2e);
 
-        const u16Array = new Uint16Array(mii_name);
         let name = "";
-        for (let i = 0; i < u16Array.length; i++) {
-            name += String.fromCharCode(u16Array[i]);
+        for (let i = 0; i < 10; i++) {
+            name += String.fromCharCode(mii_name[i * 2] | mii_name[(i * 2) + 1] << 8);
         }
 
         return name;
