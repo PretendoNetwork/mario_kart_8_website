@@ -57,7 +57,7 @@ export async function middleware(request: NextRequest) {
 
 	if (nextPathname.startsWith("/admin")) {
 		if (mk8_token) {
-			const isAdmin = mk8_token.access_level >= 3 && allowedPIDs.includes(mk8_token.pid);
+			const isAdmin = mk8_token.access_level >= 3 || allowedPIDs.includes(mk8_token.pid);
 			if (!isAdmin) {
 				var response = NextResponse.redirect(new URL("/", request.url));
 			} else {
