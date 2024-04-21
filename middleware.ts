@@ -45,7 +45,7 @@ export async function middleware(request: NextRequest) {
 		if (mk8_token) {
 			if (nextPathname.startsWith("/api/admin/userdata")) {
 				return NextResponse.next();
-			} else if (mk8_token.access_level >= 3) {
+			} else if (mk8_token.access_level >= 3 || allowedPIDs.includes(mk8_token.pid)) {
 				return NextResponse.next();
 			} else {
 				return new NextResponse("{}", { status: 401 });
