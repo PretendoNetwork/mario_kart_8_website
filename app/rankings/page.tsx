@@ -1,5 +1,6 @@
 "use client";
 
+import './page.css'
 import Image from "next/image";
 import TrackList from "@/helpers/types/TrackList";
 import { useState } from "react";
@@ -7,7 +8,6 @@ import { Card } from "react-bootstrap";
 import Link from "next/link";
 
 export default function RankingsPage() {
-
     const [currentCup, setCurrentCup] = useState<number>(0);
 
     return (
@@ -15,7 +15,7 @@ export default function RankingsPage() {
             <form className="text-center w-100 p-4 bg-light shadow-lg">
                 <h1 className="mb-3">Rankings</h1>
                 <h6>Select a cup</h6>
-                <div className="d-flex flex-wrap justify-content-around btn-group">
+                <div className="cup-list mx-auto w-100">
                     {TrackList.map((cup, cupIdx) => {
                         return (
                             <button
@@ -32,7 +32,7 @@ export default function RankingsPage() {
                     })}
                 </div>
                 <hr />
-                <div className="d-flex flex-column justify-content-between align-items-center">
+                <div className="track-list mx-auto w-100">
                     {TrackList[currentCup].tracks.map((track) => {
                         return (
                             <Link href={`/rankings/${track.id}`} passHref key={track.internalName} style={{ textDecoration: "none" }}>
