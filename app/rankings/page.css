@@ -1,0 +1,33 @@
+.cup-list {
+  max-width: 1024px;
+  
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  justify-items: center;
+  justify-content: center;
+
+  @media (min-width: 1024px) {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+.track-list {
+  max-width: 1280px;
+
+  display: grid;
+  gap: 1rem;
+
+  justify-items: center;
+  justify-content: center;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (min-width: 1280px) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
