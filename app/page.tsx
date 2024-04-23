@@ -34,6 +34,7 @@ const HomePage = () => {
 									alt="Lots of nostalgia"
 									className="d-block w-100 mx-auto"
 									style={{ maxHeight: "720px", maxWidth: "1280px" }}
+									priority
 								/>
 							</Carousel.Item>
 							<Carousel.Item>
