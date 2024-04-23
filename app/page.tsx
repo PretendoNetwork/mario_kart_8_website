@@ -1,9 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import Image from "next/image.js";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Alert, Badge, Carousel, ListGroup, Tab, Tabs } from "react-bootstrap";
+
+import Session1Image from '../public/session1.png'
+import Compe1Image from '../public/compe1.png'
+import Mktv1Image from '../public/mktv1.png'
+import Compe2Image from '../public/compe2.png'
 
 const HomePage = () => {
 	return (
@@ -23,32 +29,33 @@ const HomePage = () => {
 					<Tab eventKey="home" title="Overview">
 						<Carousel className="mb-3" variant="dark">
 							<Carousel.Item>
-								<img
-									src="/session1.png"
+								<Image
+									src={Session1Image}
 									alt="Lots of nostalgia"
 									className="d-block w-100 mx-auto"
 									style={{ maxHeight: "720px", maxWidth: "1280px" }}
+									priority
 								/>
 							</Carousel.Item>
 							<Carousel.Item>
-								<img
-									src="/compe1.png"
+								<Image
+									src={Compe1Image}
 									alt="Tournament being played"
 									className="d-block w-100 mx-auto"
 									style={{ maxHeight: "720px", maxWidth: "1280px" }}
 								/>
 							</Carousel.Item>
 							<Carousel.Item>
-								<img
-									src="/mktv1.png"
+								<Image
+									src={Mktv1Image}
 									alt="Tournament being played"
 									className="d-block w-100 mx-auto"
 									style={{ maxHeight: "720px", maxWidth: "1280px" }}
 								/>
 							</Carousel.Item>
 							<Carousel.Item>
-								<img
-									src="/compe2.png"
+								<Image
+									src={Compe2Image}
 									alt="Tournament being played"
 									className="d-block w-100 mx-auto"
 									style={{ maxHeight: "720px", maxWidth: "1280px" }}
