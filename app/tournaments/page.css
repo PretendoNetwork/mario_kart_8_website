@@ -1,0 +1,23 @@
+.preamble {
+  margin: auto;
+  max-width: 1280px;
+}
+
+.heading {
+  margin: auto;
+  max-width: 1024px;
+}
+
+.tournament-list {
+  max-width: 640px;
+  margin: auto;
+
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1rem;
+
+  @media (min-width: 786px) {
+    max-width: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
