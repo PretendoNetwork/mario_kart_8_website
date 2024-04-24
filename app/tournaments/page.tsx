@@ -34,19 +34,9 @@ export default function TournamentsPage() {
   // Tournament data fetcher
   const { data, error, isLoading, mutate } = useSWR<Tournament[]>(SWR_ALL_TOURNAMENTS_KEY, fetchAllTournaments)
 
-  const sortedTournaments = useMemo(() => {
-    return data?.sort((a, b) => {
-      // If official, always on top
-      if (a.attributes[12] == 2 && b.attributes[12] != 2) return 0
-      if (a.attributes[12] == 2) return -1
-      if (b.attributes[12] == 2) return 1
-
-      return b.id > a.id ? 1 : -1
-    }) ?? []
-  }, [data])
   const filteredTournaments = useMemo(() => (
-    sortedTournaments.filter((tournament) => tournament.name.includes(searchTerm) || tournament.communityCode.includes(searchTerm))
-  ), [sortedTournaments, searchTerm])
+    data?.filter((tournament) => tournament.name.includes(searchTerm) || tournament.communityCode.includes(searchTerm)) ?? []
+  ), [data, searchTerm])
 
   // Start countdown timer
   useEffect(() => {
