@@ -6,10 +6,10 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Alert, Badge, Carousel, ListGroup, Tab, Tabs } from "react-bootstrap";
 
-import Session1Image from '../public/session1.png'
-import Compe1Image from '../public/compe1.png'
-import Mktv1Image from '../public/mktv1.png'
-import Compe2Image from '../public/compe2.png'
+import Session1Image from "../public/session1.png";
+import Compe1Image from "../public/compe1.png";
+import Mktv1Image from "../public/mktv1.png";
+import Compe2Image from "../public/compe2.png";
 
 const HomePage = () => {
 	return (
@@ -19,10 +19,10 @@ const HomePage = () => {
 				<h6>
 					<small className="text-muted">A full game server replacement for MK8</small>
 				</h6>
-				<Alert variant="info" className="w-75 mx-auto">
+				<Alert variant="warning" className="w-75 mx-auto">
 					<p>Update changelog:</p>
 					<div>
-						<li>Fix DataStore uploads (this fixes rankings, MKTV uploads)</li>
+						<li>Fix friend rooms bug, they now work as expected.</li>
 					</div>
 				</Alert>
 				<Tabs defaultActiveKey="home" className="mb-3">
