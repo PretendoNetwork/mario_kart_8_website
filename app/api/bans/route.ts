@@ -23,7 +23,6 @@ export async function GET(request: Request) {
 			lastAllBansTime = new Date();
 		}
 
-		console.log(allBans);
 		return NextResponse.json(allBans);
 	} catch (err) {
 		return new NextResponse("{}", { status: 500 });
