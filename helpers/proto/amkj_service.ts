@@ -6,7 +6,7 @@ import { Timestamp } from "./google/protobuf/timestamp";
 
 export const protobufPackage = "amkj";
 
-export interface GetServerStatusRequest { }
+export interface GetServerStatusRequest {}
 
 export interface GetServerStatusResponse {
 	isOnline: boolean;
@@ -22,19 +22,19 @@ export interface StartMaintenanceRequest {
 	utcEndMaintenanceTime: Date | undefined;
 }
 
-export interface StartMaintenanceResponse { }
+export interface StartMaintenanceResponse {}
 
-export interface EndMaintenanceRequest { }
+export interface EndMaintenanceRequest {}
 
-export interface EndMaintenanceResponse { }
+export interface EndMaintenanceResponse {}
 
-export interface ToggleWhitelistRequest { }
+export interface ToggleWhitelistRequest {}
 
 export interface ToggleWhitelistResponse {
 	isWhitelist: boolean;
 }
 
-export interface GetWhitelistRequest { }
+export interface GetWhitelistRequest {}
 
 export interface GetWhitelistResponse {
 	pids: number[];
@@ -44,15 +44,15 @@ export interface AddWhitelistUserRequest {
 	pid: number;
 }
 
-export interface AddWhitelistUserResponse { }
+export interface AddWhitelistUserResponse {}
 
 export interface DelWhitelistUserRequest {
 	pid: number;
 }
 
-export interface DelWhitelistUserResponse { }
+export interface DelWhitelistUserResponse {}
 
-export interface GetAllUsersRequest { }
+export interface GetAllUsersRequest {}
 
 export interface GetAllUsersResponse {
 	pids: number[];
@@ -66,7 +66,7 @@ export interface KickUserResponse {
 	wasConnected: boolean;
 }
 
-export interface KickAllUsersRequest { }
+export interface KickAllUsersRequest {}
 
 export interface KickAllUsersResponse {
 	numKicked: number;
@@ -167,6 +167,50 @@ export interface GetTimeTrialRankingRequest {
 
 export interface GetTimeTrialRankingResponse {
 	rankings: TimeTrialRanking[];
+}
+
+export interface DeleteTimeTrialRankingRequest {
+	track: number;
+	pid: number;
+}
+
+export interface DeleteTimeTrialRankingResponse {}
+
+export interface DeleteAllTimeTrialRankingsRequest {
+	pid: number;
+}
+
+export interface DeleteAllTimeTrialRankingsResponse {}
+
+export interface IssueBanRequest {
+	pid: number;
+	startTime: Date | undefined;
+	endTime: Date | undefined;
+	reason: string;
+}
+
+export interface IssueBanResponse {}
+
+export interface ClearBanRequest {
+	pid: number;
+}
+
+export interface ClearBanResponse {}
+
+export interface Ban {
+	pid: number;
+	startTime: Date | undefined;
+	endTime: Date | undefined;
+	reason: string;
+}
+
+export interface GetAllBansRequest {
+	offset: number;
+	limit: number;
+}
+
+export interface GetAllBansResponse {
+	bans: Ban[];
 }
 
 function createBaseGetServerStatusRequest(): GetServerStatusRequest {
@@ -2348,6 +2392,581 @@ export const GetTimeTrialRankingResponse = {
 	},
 };
 
+function createBaseDeleteTimeTrialRankingRequest(): DeleteTimeTrialRankingRequest {
+	return { track: 0, pid: 0 };
+}
+
+export const DeleteTimeTrialRankingRequest = {
+	encode(message: DeleteTimeTrialRankingRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+		if (message.track !== 0) {
+			writer.uint32(8).uint32(message.track);
+		}
+		if (message.pid !== 0) {
+			writer.uint32(16).uint32(message.pid);
+		}
+		return writer;
+	},
+
+	decode(input: _m0.Reader | Uint8Array, length?: number): DeleteTimeTrialRankingRequest {
+		const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+		let end = length === undefined ? reader.len : reader.pos + length;
+		const message = createBaseDeleteTimeTrialRankingRequest();
+		while (reader.pos < end) {
+			const tag = reader.uint32();
+			switch (tag >>> 3) {
+				case 1:
+					message.track = reader.uint32();
+					break;
+				case 2:
+					message.pid = reader.uint32();
+					break;
+				default:
+					reader.skipType(tag & 7);
+					break;
+			}
+		}
+		return message;
+	},
+
+	fromJSON(object: any): DeleteTimeTrialRankingRequest {
+		return {
+			track: isSet(object.track) ? Number(object.track) : 0,
+			pid: isSet(object.pid) ? Number(object.pid) : 0,
+		};
+	},
+
+	toJSON(message: DeleteTimeTrialRankingRequest): unknown {
+		const obj: any = {};
+		message.track !== undefined && (obj.track = Math.round(message.track));
+		message.pid !== undefined && (obj.pid = Math.round(message.pid));
+		return obj;
+	},
+
+	fromPartial(object: DeepPartial<DeleteTimeTrialRankingRequest>): DeleteTimeTrialRankingRequest {
+		const message = createBaseDeleteTimeTrialRankingRequest();
+		message.track = object.track ?? 0;
+		message.pid = object.pid ?? 0;
+		return message;
+	},
+};
+
+function createBaseDeleteTimeTrialRankingResponse(): DeleteTimeTrialRankingResponse {
+	return {};
+}
+
+export const DeleteTimeTrialRankingResponse = {
+	encode(_: DeleteTimeTrialRankingResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+		return writer;
+	},
+
+	decode(input: _m0.Reader | Uint8Array, length?: number): DeleteTimeTrialRankingResponse {
+		const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+		let end = length === undefined ? reader.len : reader.pos + length;
+		const message = createBaseDeleteTimeTrialRankingResponse();
+		while (reader.pos < end) {
+			const tag = reader.uint32();
+			switch (tag >>> 3) {
+				default:
+					reader.skipType(tag & 7);
+					break;
+			}
+		}
+		return message;
+	},
+
+	fromJSON(_: any): DeleteTimeTrialRankingResponse {
+		return {};
+	},
+
+	toJSON(_: DeleteTimeTrialRankingResponse): unknown {
+		const obj: any = {};
+		return obj;
+	},
+
+	fromPartial(_: DeepPartial<DeleteTimeTrialRankingResponse>): DeleteTimeTrialRankingResponse {
+		const message = createBaseDeleteTimeTrialRankingResponse();
+		return message;
+	},
+};
+
+function createBaseDeleteAllTimeTrialRankingsRequest(): DeleteAllTimeTrialRankingsRequest {
+	return { pid: 0 };
+}
+
+export const DeleteAllTimeTrialRankingsRequest = {
+	encode(message: DeleteAllTimeTrialRankingsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+		if (message.pid !== 0) {
+			writer.uint32(8).uint32(message.pid);
+		}
+		return writer;
+	},
+
+	decode(input: _m0.Reader | Uint8Array, length?: number): DeleteAllTimeTrialRankingsRequest {
+		const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+		let end = length === undefined ? reader.len : reader.pos + length;
+		const message = createBaseDeleteAllTimeTrialRankingsRequest();
+		while (reader.pos < end) {
+			const tag = reader.uint32();
+			switch (tag >>> 3) {
+				case 1:
+					message.pid = reader.uint32();
+					break;
+				default:
+					reader.skipType(tag & 7);
+					break;
+			}
+		}
+		return message;
+	},
+
+	fromJSON(object: any): DeleteAllTimeTrialRankingsRequest {
+		return {
+			pid: isSet(object.pid) ? Number(object.pid) : 0,
+		};
+	},
+
+	toJSON(message: DeleteAllTimeTrialRankingsRequest): unknown {
+		const obj: any = {};
+		message.pid !== undefined && (obj.pid = Math.round(message.pid));
+		return obj;
+	},
+
+	fromPartial(object: DeepPartial<DeleteAllTimeTrialRankingsRequest>): DeleteAllTimeTrialRankingsRequest {
+		const message = createBaseDeleteAllTimeTrialRankingsRequest();
+		message.pid = object.pid ?? 0;
+		return message;
+	},
+};
+
+function createBaseDeleteAllTimeTrialRankingsResponse(): DeleteAllTimeTrialRankingsResponse {
+	return {};
+}
+
+export const DeleteAllTimeTrialRankingsResponse = {
+	encode(_: DeleteAllTimeTrialRankingsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+		return writer;
+	},
+
+	decode(input: _m0.Reader | Uint8Array, length?: number): DeleteAllTimeTrialRankingsResponse {
+		const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+		let end = length === undefined ? reader.len : reader.pos + length;
+		const message = createBaseDeleteAllTimeTrialRankingsResponse();
+		while (reader.pos < end) {
+			const tag = reader.uint32();
+			switch (tag >>> 3) {
+				default:
+					reader.skipType(tag & 7);
+					break;
+			}
+		}
+		return message;
+	},
+
+	fromJSON(_: any): DeleteAllTimeTrialRankingsResponse {
+		return {};
+	},
+
+	toJSON(_: DeleteAllTimeTrialRankingsResponse): unknown {
+		const obj: any = {};
+		return obj;
+	},
+
+	fromPartial(_: DeepPartial<DeleteAllTimeTrialRankingsResponse>): DeleteAllTimeTrialRankingsResponse {
+		const message = createBaseDeleteAllTimeTrialRankingsResponse();
+		return message;
+	},
+};
+
+function createBaseIssueBanRequest(): IssueBanRequest {
+	return { pid: 0, startTime: undefined, endTime: undefined, reason: "" };
+}
+
+export const IssueBanRequest = {
+	encode(message: IssueBanRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+		if (message.pid !== 0) {
+			writer.uint32(8).uint32(message.pid);
+		}
+		if (message.startTime !== undefined) {
+			Timestamp.encode(toTimestamp(message.startTime), writer.uint32(18).fork()).ldelim();
+		}
+		if (message.endTime !== undefined) {
+			Timestamp.encode(toTimestamp(message.endTime), writer.uint32(26).fork()).ldelim();
+		}
+		if (message.reason !== "") {
+			writer.uint32(34).string(message.reason);
+		}
+		return writer;
+	},
+
+	decode(input: _m0.Reader | Uint8Array, length?: number): IssueBanRequest {
+		const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+		let end = length === undefined ? reader.len : reader.pos + length;
+		const message = createBaseIssueBanRequest();
+		while (reader.pos < end) {
+			const tag = reader.uint32();
+			switch (tag >>> 3) {
+				case 1:
+					message.pid = reader.uint32();
+					break;
+				case 2:
+					message.startTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+					break;
+				case 3:
+					message.endTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+					break;
+				case 4:
+					message.reason = reader.string();
+					break;
+				default:
+					reader.skipType(tag & 7);
+					break;
+			}
+		}
+		return message;
+	},
+
+	fromJSON(object: any): IssueBanRequest {
+		return {
+			pid: isSet(object.pid) ? Number(object.pid) : 0,
+			startTime: isSet(object.startTime) ? fromJsonTimestamp(object.startTime) : undefined,
+			endTime: isSet(object.endTime) ? fromJsonTimestamp(object.endTime) : undefined,
+			reason: isSet(object.reason) ? String(object.reason) : "",
+		};
+	},
+
+	toJSON(message: IssueBanRequest): unknown {
+		const obj: any = {};
+		message.pid !== undefined && (obj.pid = Math.round(message.pid));
+		message.startTime !== undefined && (obj.startTime = message.startTime.toISOString());
+		message.endTime !== undefined && (obj.endTime = message.endTime.toISOString());
+		message.reason !== undefined && (obj.reason = message.reason);
+		return obj;
+	},
+
+	fromPartial(object: DeepPartial<IssueBanRequest>): IssueBanRequest {
+		const message = createBaseIssueBanRequest();
+		message.pid = object.pid ?? 0;
+		message.startTime = object.startTime ?? undefined;
+		message.endTime = object.endTime ?? undefined;
+		message.reason = object.reason ?? "";
+		return message;
+	},
+};
+
+function createBaseIssueBanResponse(): IssueBanResponse {
+	return {};
+}
+
+export const IssueBanResponse = {
+	encode(_: IssueBanResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+		return writer;
+	},
+
+	decode(input: _m0.Reader | Uint8Array, length?: number): IssueBanResponse {
+		const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+		let end = length === undefined ? reader.len : reader.pos + length;
+		const message = createBaseIssueBanResponse();
+		while (reader.pos < end) {
+			const tag = reader.uint32();
+			switch (tag >>> 3) {
+				default:
+					reader.skipType(tag & 7);
+					break;
+			}
+		}
+		return message;
+	},
+
+	fromJSON(_: any): IssueBanResponse {
+		return {};
+	},
+
+	toJSON(_: IssueBanResponse): unknown {
+		const obj: any = {};
+		return obj;
+	},
+
+	fromPartial(_: DeepPartial<IssueBanResponse>): IssueBanResponse {
+		const message = createBaseIssueBanResponse();
+		return message;
+	},
+};
+
+function createBaseClearBanRequest(): ClearBanRequest {
+	return { pid: 0 };
+}
+
+export const ClearBanRequest = {
+	encode(message: ClearBanRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+		if (message.pid !== 0) {
+			writer.uint32(8).uint32(message.pid);
+		}
+		return writer;
+	},
+
+	decode(input: _m0.Reader | Uint8Array, length?: number): ClearBanRequest {
+		const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+		let end = length === undefined ? reader.len : reader.pos + length;
+		const message = createBaseClearBanRequest();
+		while (reader.pos < end) {
+			const tag = reader.uint32();
+			switch (tag >>> 3) {
+				case 1:
+					message.pid = reader.uint32();
+					break;
+				default:
+					reader.skipType(tag & 7);
+					break;
+			}
+		}
+		return message;
+	},
+
+	fromJSON(object: any): ClearBanRequest {
+		return {
+			pid: isSet(object.pid) ? Number(object.pid) : 0,
+		};
+	},
+
+	toJSON(message: ClearBanRequest): unknown {
+		const obj: any = {};
+		message.pid !== undefined && (obj.pid = Math.round(message.pid));
+		return obj;
+	},
+
+	fromPartial(object: DeepPartial<ClearBanRequest>): ClearBanRequest {
+		const message = createBaseClearBanRequest();
+		message.pid = object.pid ?? 0;
+		return message;
+	},
+};
+
+function createBaseClearBanResponse(): ClearBanResponse {
+	return {};
+}
+
+export const ClearBanResponse = {
+	encode(_: ClearBanResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+		return writer;
+	},
+
+	decode(input: _m0.Reader | Uint8Array, length?: number): ClearBanResponse {
+		const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+		let end = length === undefined ? reader.len : reader.pos + length;
+		const message = createBaseClearBanResponse();
+		while (reader.pos < end) {
+			const tag = reader.uint32();
+			switch (tag >>> 3) {
+				default:
+					reader.skipType(tag & 7);
+					break;
+			}
+		}
+		return message;
+	},
+
+	fromJSON(_: any): ClearBanResponse {
+		return {};
+	},
+
+	toJSON(_: ClearBanResponse): unknown {
+		const obj: any = {};
+		return obj;
+	},
+
+	fromPartial(_: DeepPartial<ClearBanResponse>): ClearBanResponse {
+		const message = createBaseClearBanResponse();
+		return message;
+	},
+};
+
+function createBaseBan(): Ban {
+	return { pid: 0, startTime: undefined, endTime: undefined, reason: "" };
+}
+
+export const Ban = {
+	encode(message: Ban, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+		if (message.pid !== 0) {
+			writer.uint32(8).uint32(message.pid);
+		}
+		if (message.startTime !== undefined) {
+			Timestamp.encode(toTimestamp(message.startTime), writer.uint32(18).fork()).ldelim();
+		}
+		if (message.endTime !== undefined) {
+			Timestamp.encode(toTimestamp(message.endTime), writer.uint32(26).fork()).ldelim();
+		}
+		if (message.reason !== "") {
+			writer.uint32(34).string(message.reason);
+		}
+		return writer;
+	},
+
+	decode(input: _m0.Reader | Uint8Array, length?: number): Ban {
+		const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+		let end = length === undefined ? reader.len : reader.pos + length;
+		const message = createBaseBan();
+		while (reader.pos < end) {
+			const tag = reader.uint32();
+			switch (tag >>> 3) {
+				case 1:
+					message.pid = reader.uint32();
+					break;
+				case 2:
+					message.startTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+					break;
+				case 3:
+					message.endTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+					break;
+				case 4:
+					message.reason = reader.string();
+					break;
+				default:
+					reader.skipType(tag & 7);
+					break;
+			}
+		}
+		return message;
+	},
+
+	fromJSON(object: any): Ban {
+		return {
+			pid: isSet(object.pid) ? Number(object.pid) : 0,
+			startTime: isSet(object.startTime) ? fromJsonTimestamp(object.startTime) : undefined,
+			endTime: isSet(object.endTime) ? fromJsonTimestamp(object.endTime) : undefined,
+			reason: isSet(object.reason) ? String(object.reason) : "",
+		};
+	},
+
+	toJSON(message: Ban): unknown {
+		const obj: any = {};
+		message.pid !== undefined && (obj.pid = Math.round(message.pid));
+		message.startTime !== undefined && (obj.startTime = message.startTime.toISOString());
+		message.endTime !== undefined && (obj.endTime = message.endTime.toISOString());
+		message.reason !== undefined && (obj.reason = message.reason);
+		return obj;
+	},
+
+	fromPartial(object: DeepPartial<Ban>): Ban {
+		const message = createBaseBan();
+		message.pid = object.pid ?? 0;
+		message.startTime = object.startTime ?? undefined;
+		message.endTime = object.endTime ?? undefined;
+		message.reason = object.reason ?? "";
+		return message;
+	},
+};
+
+function createBaseGetAllBansRequest(): GetAllBansRequest {
+	return { offset: 0, limit: 0 };
+}
+
+export const GetAllBansRequest = {
+	encode(message: GetAllBansRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+		if (message.offset !== 0) {
+			writer.uint32(8).uint32(message.offset);
+		}
+		if (message.limit !== 0) {
+			writer.uint32(16).int32(message.limit);
+		}
+		return writer;
+	},
+
+	decode(input: _m0.Reader | Uint8Array, length?: number): GetAllBansRequest {
+		const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+		let end = length === undefined ? reader.len : reader.pos + length;
+		const message = createBaseGetAllBansRequest();
+		while (reader.pos < end) {
+			const tag = reader.uint32();
+			switch (tag >>> 3) {
+				case 1:
+					message.offset = reader.uint32();
+					break;
+				case 2:
+					message.limit = reader.int32();
+					break;
+				default:
+					reader.skipType(tag & 7);
+					break;
+			}
+		}
+		return message;
+	},
+
+	fromJSON(object: any): GetAllBansRequest {
+		return {
+			offset: isSet(object.offset) ? Number(object.offset) : 0,
+			limit: isSet(object.limit) ? Number(object.limit) : 0,
+		};
+	},
+
+	toJSON(message: GetAllBansRequest): unknown {
+		const obj: any = {};
+		message.offset !== undefined && (obj.offset = Math.round(message.offset));
+		message.limit !== undefined && (obj.limit = Math.round(message.limit));
+		return obj;
+	},
+
+	fromPartial(object: DeepPartial<GetAllBansRequest>): GetAllBansRequest {
+		const message = createBaseGetAllBansRequest();
+		message.offset = object.offset ?? 0;
+		message.limit = object.limit ?? 0;
+		return message;
+	},
+};
+
+function createBaseGetAllBansResponse(): GetAllBansResponse {
+	return { bans: [] };
+}
+
+export const GetAllBansResponse = {
+	encode(message: GetAllBansResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+		for (const v of message.bans) {
+			Ban.encode(v!, writer.uint32(10).fork()).ldelim();
+		}
+		return writer;
+	},
+
+	decode(input: _m0.Reader | Uint8Array, length?: number): GetAllBansResponse {
+		const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+		let end = length === undefined ? reader.len : reader.pos + length;
+		const message = createBaseGetAllBansResponse();
+		while (reader.pos < end) {
+			const tag = reader.uint32();
+			switch (tag >>> 3) {
+				case 1:
+					message.bans.push(Ban.decode(reader, reader.uint32()));
+					break;
+				default:
+					reader.skipType(tag & 7);
+					break;
+			}
+		}
+		return message;
+	},
+
+	fromJSON(object: any): GetAllBansResponse {
+		return {
+			bans: Array.isArray(object?.bans) ? object.bans.map((e: any) => Ban.fromJSON(e)) : [],
+		};
+	},
+
+	toJSON(message: GetAllBansResponse): unknown {
+		const obj: any = {};
+		if (message.bans) {
+			obj.bans = message.bans.map((e) => (e ? Ban.toJSON(e) : undefined));
+		} else {
+			obj.bans = [];
+		}
+		return obj;
+	},
+
+	fromPartial(object: DeepPartial<GetAllBansResponse>): GetAllBansResponse {
+		const message = createBaseGetAllBansResponse();
+		message.bans = object.bans?.map((e) => Ban.fromPartial(e)) || [];
+		return message;
+	},
+};
+
 export type AmkjServiceDefinition = typeof AmkjServiceDefinition;
 export const AmkjServiceDefinition = {
 	name: "AmkjService",
@@ -2465,6 +3084,46 @@ export const AmkjServiceDefinition = {
 			responseStream: false,
 			options: {},
 		},
+		deleteTimeTrialRanking: {
+			name: "DeleteTimeTrialRanking",
+			requestType: DeleteTimeTrialRankingRequest,
+			requestStream: false,
+			responseType: DeleteTimeTrialRankingResponse,
+			responseStream: false,
+			options: {},
+		},
+		deleteAllTimeTrialRankings: {
+			name: "DeleteAllTimeTrialRankings",
+			requestType: DeleteAllTimeTrialRankingsRequest,
+			requestStream: false,
+			responseType: DeleteAllTimeTrialRankingsResponse,
+			responseStream: false,
+			options: {},
+		},
+		issueBan: {
+			name: "IssueBan",
+			requestType: IssueBanRequest,
+			requestStream: false,
+			responseType: IssueBanResponse,
+			responseStream: false,
+			options: {},
+		},
+		clearBan: {
+			name: "ClearBan",
+			requestType: ClearBanRequest,
+			requestStream: false,
+			responseType: ClearBanResponse,
+			responseStream: false,
+			options: {},
+		},
+		getAllBans: {
+			name: "GetAllBans",
+			requestType: GetAllBansRequest,
+			requestStream: false,
+			responseType: GetAllBansResponse,
+			responseStream: false,
+			options: {},
+		},
 	},
 } as const;
 
@@ -2486,6 +3145,17 @@ export interface AmkjServiceServiceImplementation<CallContextExt = {}> {
 		request: GetTimeTrialRankingRequest,
 		context: CallContext & CallContextExt,
 	): Promise<DeepPartial<GetTimeTrialRankingResponse>>;
+	deleteTimeTrialRanking(
+		request: DeleteTimeTrialRankingRequest,
+		context: CallContext & CallContextExt,
+	): Promise<DeepPartial<DeleteTimeTrialRankingResponse>>;
+	deleteAllTimeTrialRankings(
+		request: DeleteAllTimeTrialRankingsRequest,
+		context: CallContext & CallContextExt,
+	): Promise<DeepPartial<DeleteAllTimeTrialRankingsResponse>>;
+	issueBan(request: IssueBanRequest, context: CallContext & CallContextExt): Promise<DeepPartial<IssueBanResponse>>;
+	clearBan(request: ClearBanRequest, context: CallContext & CallContextExt): Promise<DeepPartial<ClearBanResponse>>;
+	getAllBans(request: GetAllBansRequest, context: CallContext & CallContextExt): Promise<DeepPartial<GetAllBansResponse>>;
 }
 
 export interface AmkjServiceClient<CallOptionsExt = {}> {
@@ -2506,6 +3176,17 @@ export interface AmkjServiceClient<CallOptionsExt = {}> {
 		request: DeepPartial<GetTimeTrialRankingRequest>,
 		options?: CallOptions & CallOptionsExt,
 	): Promise<GetTimeTrialRankingResponse>;
+	deleteTimeTrialRanking(
+		request: DeepPartial<DeleteTimeTrialRankingRequest>,
+		options?: CallOptions & CallOptionsExt,
+	): Promise<DeleteTimeTrialRankingResponse>;
+	deleteAllTimeTrialRankings(
+		request: DeepPartial<DeleteAllTimeTrialRankingsRequest>,
+		options?: CallOptions & CallOptionsExt,
+	): Promise<DeleteAllTimeTrialRankingsResponse>;
+	issueBan(request: DeepPartial<IssueBanRequest>, options?: CallOptions & CallOptionsExt): Promise<IssueBanResponse>;
+	clearBan(request: DeepPartial<ClearBanRequest>, options?: CallOptions & CallOptionsExt): Promise<ClearBanResponse>;
+	getAllBans(request: DeepPartial<GetAllBansRequest>, options?: CallOptions & CallOptionsExt): Promise<GetAllBansResponse>;
 }
 
 declare var self: any | undefined;
@@ -2579,8 +3260,6 @@ function longToNumber(long: Long): number {
 	return long.toNumber();
 }
 
-// If you get a compile-error about 'Constructor<Long> and ... have no overlap',
-// add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.
 if (_m0.util.Long !== Long) {
 	_m0.util.Long = Long as any;
 	_m0.configure();

@@ -27,6 +27,13 @@ service AmkjService {
     rpc GetUnlocks(GetUnlocksRequest) returns (GetUnlocksResponse) {}
 
     rpc GetTimeTrialRanking(GetTimeTrialRankingRequest) returns (GetTimeTrialRankingResponse) {}
+
+    rpc DeleteTimeTrialRanking(DeleteTimeTrialRankingRequest) returns (DeleteTimeTrialRankingResponse) {}
+    rpc DeleteAllTimeTrialRankings(DeleteAllTimeTrialRankingsRequest) returns (DeleteAllTimeTrialRankingsResponse) {}
+
+    rpc IssueBan(IssueBanRequest) returns (IssueBanResponse) {}
+    rpc ClearBan(ClearBanRequest) returns (ClearBanResponse) {}
+    rpc GetAllBans(GetAllBansRequest) returns (GetAllBansResponse) {}
 }
 
 // ========================================================
@@ -208,3 +215,59 @@ message GetTimeTrialRankingRequest {
 message GetTimeTrialRankingResponse {
     repeated TimeTrialRanking rankings = 1;
 }
+
+// ========================================================
+
+message DeleteTimeTrialRankingRequest {
+    uint32 track = 1;
+    uint32 pid = 2;
+}
+
+message DeleteTimeTrialRankingResponse {}
+
+// ========================================================
+
+message DeleteAllTimeTrialRankingsRequest {
+    uint32 pid = 1;
+}
+
+message DeleteAllTimeTrialRankingsResponse {}
+
+// ========================================================
+
+message IssueBanRequest {
+    uint32 pid = 1;
+    google.protobuf.Timestamp start_time = 2;
+    google.protobuf.Timestamp end_time = 3;
+    string reason = 4;
+}
+
+message IssueBanResponse {}
+
+// ========================================================
+
+message ClearBanRequest {
+    uint32 pid = 1;
+}
+
+message ClearBanResponse {}
+
+// ========================================================
+
+message Ban {
+    uint32 pid = 1;
+    google.protobuf.Timestamp start_time = 2;
+    google.protobuf.Timestamp end_time = 3;
+    string reason = 4;
+}
+
+message GetAllBansRequest {
+    uint32 offset = 1;
+    int32 limit = 2;
+}
+
+message GetAllBansResponse {
+    repeated Ban bans = 1;
+}
+
+// ========================================================

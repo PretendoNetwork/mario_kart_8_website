@@ -4,7 +4,7 @@ import { type JWTTokenPayload, getMK8Token, getMK8TokenFromAccountAPI } from "./
 
 export async function middleware(request: NextRequest) {
 	const nextPathname = request.nextUrl.pathname;
-	const allowedPIDs: number[] = [1606041002]; // PretendoRambo3
+	const allowedPIDs: number[] = [1606041002, 1628534996]; // PretendoRambo3, PN_Rambo2 -- In addition to access_level >= 3
 
 	if (nextPathname.startsWith("/logout")) {
 		const url = new URL("/", request.url);
