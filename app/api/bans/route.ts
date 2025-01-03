@@ -21,6 +21,14 @@ export async function GET(request: Request) {
 				},
 			);
 			lastAllBansTime = new Date();
+
+			allBans.bans = allBans.bans.sort((a, b) => {
+				if (a.startTime && b.startTime) {
+					return b.startTime.getTime() - a.startTime.getTime();
+				} else {
+					return 0;
+				}
+			});
 		}
 
 		return NextResponse.json(allBans);
