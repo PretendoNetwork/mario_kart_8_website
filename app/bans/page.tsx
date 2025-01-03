@@ -88,7 +88,7 @@ export default function BansPage() {
 												<td>{ban.pid}</td>
 												<td>{ban.reason}</td>
 												<td>{new Date(ban.startTime as unknown as string).toLocaleString()}</td>
-												<td>{new Date(ban.endTime as unknown as string).toLocaleString()}</td>
+												<td>{ban.endTime ? new Date(ban.endTime as unknown as string).toLocaleString() : "infinite"}</td>
 											</tr>
 										);
 									})}
@@ -104,9 +104,9 @@ export default function BansPage() {
 								document.location.reload();
 							}}
 						>
-							<Alert.Heading>No player bans!</Alert.Heading>
+							<Alert.Heading>No player banned!</Alert.Heading>
 							<hr />
-							<p>This means no players are currently banned players.</p>
+							<p>This means no players are currently banned.</p>
 						</Alert>
 					);
 				}

@@ -185,7 +185,7 @@ export interface DeleteAllTimeTrialRankingsResponse {}
 export interface IssueBanRequest {
 	pid: number;
 	startTime: Date | undefined;
-	endTime: Date | undefined;
+	endTime?: Date | undefined;
 	reason: string;
 }
 
@@ -200,7 +200,7 @@ export interface ClearBanResponse {}
 export interface Ban {
 	pid: number;
 	startTime: Date | undefined;
-	endTime: Date | undefined;
+	endTime?: Date | undefined;
 	reason: string;
 }
 

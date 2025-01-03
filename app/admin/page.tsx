@@ -27,6 +27,7 @@ const AdminPage = () => {
 	const [endBan, setEndBan] = useState<string>("");
 	const [bannedPID, setBannedPID] = useState<number>();
 	const [banReason, setBanReason] = useState<string>("");
+	const [banPerm, setBanPerm] = useState<boolean>(false);
 
 	const trackList = TrackList.flatMap((cup) => {
 		return cup.tracks.map((track) => {
@@ -185,16 +186,18 @@ const AdminPage = () => {
 		}
 
 		const endDate = new Date(endBan);
-		const isEndInvalid = isNaN(endDate.getTime());
-		if (isEndInvalid) {
-			alert("End date is invalid!");
-			return;
+		if (!banPerm) {
+			const isEndInvalid = isNaN(endDate.getTime());
+			if (isEndInvalid) {
+				alert("End date is invalid!");
+				return;
+			}
 		}
 
 		const req: IssueBanRequest = {
 			pid: bannedPID,
 			startTime: startDate,
-			endTime: endDate,
+			endTime: banPerm ? undefined : endDate,
 			reason: banReason,
 		};
 
@@ -305,19 +308,21 @@ const AdminPage = () => {
 					</InputGroup>
 					<InputGroup className="mb-3 justify-content-center align-items-center">
 						<InputGroup.Text>Ban end</InputGroup.Text>
-						<input type="datetime-local" onChange={(event) => setEndBan(event.target.value)} />
+						<input type="datetime-local" onChange={(event) => setEndBan(event.target.value)} disabled={banPerm} />
 					</InputGroup>
 					<InputGroup className="mb-3 justify-content-center align-items-center">
 						<InputGroup.Text>Reason</InputGroup.Text>
 						<input type="text" onChange={(event) => setBanReason(event.target.value)} />
 					</InputGroup>
-					<div className="d-flex flex-column justify-content-center align-items-center">
+					<div className="d-flex flex-row justify-content-center align-items-center items-center">
 						<Button className="mb-3" onClick={issueBan} variant="danger" disabled={bannedPID === undefined || isNaN(bannedPID)}>
 							Ban
 						</Button>
 						<Button className="mb-3" onClick={clearBan} disabled={bannedPID === undefined || isNaN(bannedPID)}>
 							Clear bans
 						</Button>
+						<input type="checkbox" checked={banPerm} onChange={(event) => setBanPerm(event.target.checked)} name="perm" />
+						<label htmlFor="perm">Permanent ban</label>
 					</div>
 				</form>
 			</div>

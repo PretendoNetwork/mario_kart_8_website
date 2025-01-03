@@ -238,7 +238,7 @@ message DeleteAllTimeTrialRankingsResponse {}
 message IssueBanRequest {
     uint32 pid = 1;
     google.protobuf.Timestamp start_time = 2;
-    google.protobuf.Timestamp end_time = 3;
+    optional google.protobuf.Timestamp end_time = 3;
     string reason = 4;
 }
 
@@ -257,7 +257,7 @@ message ClearBanResponse {}
 message Ban {
     uint32 pid = 1;
     google.protobuf.Timestamp start_time = 2;
-    google.protobuf.Timestamp end_time = 3;
+    optional google.protobuf.Timestamp end_time = 3;
     string reason = 4;
 }
 
