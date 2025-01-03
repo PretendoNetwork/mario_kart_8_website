@@ -23,6 +23,7 @@ const HomePage = () => {
 					<p>Update changelog:</p>
 					<div>
 						<li>Fix friend rooms bug, they now work as expected.</li>
+						<li>Fix rankings ghost and MKTV downloads! (no more 106-1201)</li>
 					</div>
 				</Alert>
 				<Tabs defaultActiveKey="home" className="mb-3">
