@@ -31,5 +31,10 @@
   "devDependencies": {
     "grpc-tools": "^1.12.4",
     "ts-proto": "^1.112.0"
+  },
+  "allowScripts": {
+    "grpc-tools@1.12.4": true,
+    "protobufjs@7.2.4": true,
+    "protobufjs@6.11.4": true
   }
 }
