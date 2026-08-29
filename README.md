@@ -1,5 +1,10 @@
 # MK8 Pretendo website
 
+This is the currently hosted version of [the Mario Kart 8 website](https://mario-kart-8.pretendo.network) on Pretendo Network. This repo has stopped development.
+
+> [!IMPORTANT]
+> This repository is in **maintenance mode**, no new features will be added. All new efforts should go to [the new repo](https://github.com/PretendoNetwork/mario-kart-8)
+
 # Instructions
 
 - Rename `example.env` to `.env` and edit the configuration file to match your running env.
