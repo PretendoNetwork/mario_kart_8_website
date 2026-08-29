@@ -25,7 +25,7 @@ RUN npm run build
 FROM base AS final
 ARG app_dir
 
-RUN mkdir .next
+RUN mkdir .next && chown node:node -R .next
 
 ENV NODE_ENV=production
 ENV PORT=3000
@@ -33,9 +33,9 @@ USER node
 
 EXPOSE 3000
 
-COPY --from=build ${app_dir}/public ${app_dir}/public
+COPY --from=build --chown=node ${app_dir}/public ${app_dir}/public
 
-COPY --from=build ${app_dir}/.next/standalone ${app_dir}
-COPY --from=build ${app_dir}/.next/static ${app_dir}/.next/static
+COPY --from=build --chown=node ${app_dir}/.next/standalone ${app_dir}
+COPY --from=build --chown=node ${app_dir}/.next/static ${app_dir}/.next/static
 
 CMD ["node", "server.js"]
