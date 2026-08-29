@@ -2,7 +2,7 @@
 
 # Instructions
 
-- Rename ``app.config.example.ts`` to ``app.config.ts`` and edit the configuration file to match your running env.
+- Rename `example.env` to `.env` and edit the configuration file to match your running env.
 
 ```shell
 npm install
