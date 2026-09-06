@@ -42,6 +42,40 @@ export async function getMK8TokenEx(mk8_token: string): Promise<JWTTokenPayload 
     return null;
 }
 
+async function getUserdataFromToken(token: string): Promise<JWTTokenPayload | null> {
+    try {
+        const response = await fetch(`http://127.0.0.1:${app_config.serverPort}/api/exchange-token`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                secret: app_config.internal_secret_key,
+                token,
+            }),
+        });
+        const json = await response.json();
+        return json as JWTTokenPayload;
+    } catch (err) {
+        console.error(err);
+        return null;
+    }
+}
+
+export async function buildUserdataFromGrpc(token: string): Promise<JWTTokenPayload> {
+    const userData = await legacyApiGrpcClient.getUserData({}, {
+        metadata: Metadata({
+            "X-Token": token
+        })
+    })
+    return {
+        access_level: userData.accessLevel,
+        server_access_level: userData.serverAccessLevel,
+        pnid: userData.username,
+        pid: userData.pid
+    }
+}
+
 export async function getMK8TokenFromAccountAPI(request: NextRequest): Promise<{ token: JWTTokenPayload, jwt_token: string } | null> {
     const access_token = request.cookies.get("access_token")?.value;
 
@@ -50,16 +84,9 @@ export async function getMK8TokenFromAccountAPI(request: NextRequest): Promise<{
     }
 
     try {
-        const userData = await legacyApiGrpcClient.getUserData({}, {
-            metadata: Metadata({
-                "X-Token": access_token
-            })
-        })
-        const token_data: JWTTokenPayload = {
-            access_level: userData.accessLevel,
-            server_access_level: userData.serverAccessLevel,
-            pnid: userData.username,
-            pid: userData.pid
+        const token_data = await getUserdataFromToken(access_token);
+        if (!token_data) {
+            return null;
         }
 
         const token = await new SignJWT(token_data)

@@ -1,4 +1,11 @@
 interface AppConfig {
+    /** Port that the webserver is running on */
+    serverPort: number;
+
+    /** Secret for internal communication */
+    internal_secret_key: string;
+
+    /** Secret signing key for JWT cookie */
     jwt_secret: string;
 
     /** GRPC host of the MK8 GRPC service. Example: `localhost:8080` */
@@ -15,6 +22,8 @@ interface AppConfig {
 }
 
 const app_config: AppConfig = {
+    serverPort: Number(process.env.PORT) || 3000,
+    internal_secret_key: process.env.MK8_INTERNAL_SECRET_KEY ?? '',
     jwt_secret: process.env.MK8_JWT_SECRET ?? '',
     cdn_base_url: process.env.MK8_CDN_BASE_URL ?? '',
 
