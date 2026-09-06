@@ -2,8 +2,15 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { type JWTTokenPayload, getMK8Token, getMK8TokenFromAccountAPI, getMiiImageFromPid } from "./helpers/types/JWTTokenPayload";
 
+const skipProxy = [
+	'/api/exchange-token'
+]
+
 export async function proxy(request: NextRequest) {
 	const nextPathname = request.nextUrl.pathname;
+	if (skipProxy.includes(nextPathname)) {
+		return NextResponse.next();
+	}
 
 	const hostname = request.nextUrl.hostname;
 	const redirect_login_url = `https://${hostname.substring(hostname.indexOf(".") + 1)}/account/login?redirect=http://${hostname}`;
