@@ -10,10 +10,7 @@ export async function proxy(request: NextRequest) {
 		const url = new URL("/", request.url);
 		const response = NextResponse.redirect(url);
 
-		response.cookies.set("mk8_token", "", { maxAge: 0, domain: ".pretendo.network" });
-		response.cookies.set("access_token", "", { maxAge: 0, domain: ".pretendo.network" });
-		response.cookies.set("refresh_token", "", { maxAge: 0, domain: ".pretendo.network" });
-		response.cookies.set("token_type", "", { maxAge: 0, domain: ".pretendo.network" });
+		response.cookies.set("mk8_token", "", { maxAge: 0, sameSite: 'strict', httpOnly: true });
 		return response;
 	}
 
@@ -69,7 +66,7 @@ export async function proxy(request: NextRequest) {
 			response.headers.set("X-MK8-Pretendo-ImageURL", mk8_token.mii_image_url);
 			response.headers.set("X-MK8-Pretendo-PID", mk8_token.pid.toString());
 			if (res) {
-				response.cookies.set("mk8_token", res.jwt_token, { domain: ".pretendo.network" });
+				response.cookies.set("mk8_token", res.jwt_token, { sameSite: 'strict', httpOnly: true });
 			}
 			return response;
 		} else {
@@ -88,7 +85,7 @@ export async function proxy(request: NextRequest) {
 			response.headers.set("X-MK8-Pretendo-PID", mk8_token.pid.toString());
 		}
 		if (res) {
-			response.cookies.set("mk8_token", res.jwt_token, { domain: ".pretendo.network" });
+			response.cookies.set("mk8_token", res.jwt_token, { sameSite: 'strict', httpOnly: true });
 		}
 		return response;
 	}
