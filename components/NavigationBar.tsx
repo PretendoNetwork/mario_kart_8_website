@@ -6,7 +6,7 @@ import { Navbar, Nav, Spinner } from "react-bootstrap";
 import { usePathname } from "next/navigation";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Popover from "react-bootstrap/Popover";
-import { MdLogin, MdLogout } from "react-icons/md";
+import { MdLogin } from "react-icons/md";
 import { isBrowser } from "react-device-detect";
 import { NEXStatus } from "./NEXStatus";
 import { ReactNode, useState } from "react";
@@ -50,14 +50,6 @@ const NavigationBar: React.FC<NavigationBarProps> = ({}) => {
 		if (responseHeaders) {
 			if (isLoggedIn) {
 				return (
-					/*
-                    <Link href="#" className="nav-link me-5" onClick={() => {
-                        fetch('/logout').then(() => window.location.reload());
-                    }}>
-                        <Image src={responseHeaders.get("x-mk8-pretendo-imageurl") as string} width={48} height={48} alt="Mii profile picture" className="mb-2" />
-                        <strong>{responseHeaders.get("x-mk8-pretendo-username")}</strong>
-                    </Link>
-                    */
 					<div className="d-flex flex-row justify-content-center align-items-center">
 						<div className="d-flex flex-column justify-content-center align-items-center">
 							<Image
@@ -69,9 +61,6 @@ const NavigationBar: React.FC<NavigationBarProps> = ({}) => {
 							/>
 							<strong>{responseHeaders.get("x-mk8-pretendo-username")}</strong>
 						</div>
-						<Nav.Link href="/logout" className="nav-link ms-3 me-3">
-							<MdLogout size={32} className="text-danger" />
-						</Nav.Link>
 					</div>
 				);
 			} else {

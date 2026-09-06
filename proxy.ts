@@ -5,14 +5,6 @@ import { type JWTTokenPayload, getMK8Token, getMK8TokenFromAccountAPI } from "./
 export async function proxy(request: NextRequest) {
 	const nextPathname = request.nextUrl.pathname;
 
-	if (nextPathname.startsWith("/logout")) {
-		const url = new URL("/", request.url);
-		const response = NextResponse.redirect(url);
-
-		response.cookies.set("mk8_token", "", { maxAge: 0, sameSite: 'strict', httpOnly: true });
-		return response;
-	}
-
 	const hostname = request.nextUrl.hostname;
 	const redirect_login_url = `https://${hostname.substring(hostname.indexOf(".") + 1)}/account/login?redirect=http://${hostname}`;
 
@@ -90,5 +82,5 @@ export async function proxy(request: NextRequest) {
 	}
 }
 export const config = {
-	matcher: ["/", "/logout", "/api/:path*", "/admin/:path*", "/dashboard/:path*", "/tournaments/:path*", "/gatherings/:path*", "/rankings/:path*"],
+	matcher: ["/", "/api/:path*", "/admin/:path*", "/dashboard/:path*", "/tournaments/:path*", "/gatherings/:path*", "/rankings/:path*"],
 };
