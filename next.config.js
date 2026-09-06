@@ -9,7 +9,7 @@ const nextConfig = {
 		remotePatterns: [
 			{
 				protocol: 'https',
-				hostname: 'pretendo-cdn.b-cdn.net',
+				hostname: 'r2-cdn.pretendo.cc',
 				port: '',
 				pathname: '/**',
 			},
