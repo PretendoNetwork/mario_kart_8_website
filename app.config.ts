@@ -1,15 +1,22 @@
 interface AppConfig {
     jwt_secret: string;
-    grpc_host: string;
-    grpc_port: number;
-    grpc_api_key: string;
+
+    /** GRPC host of the MK8 GRPC service. Example: `localhost:8080` */
+    mk8_grpc_host: string;
+
+    /** API key of the MK8 GRPC service */
+    mk8_grpc_api_key: string;
+
+    /** GRPC host of the account service GRPC service. Example: `localhost:8080` */
+    account_grpc_host: string;
 }
 
 const app_config: AppConfig = {
     jwt_secret: process.env.MK8_JWT_SECRET ?? '',
-    grpc_host: process.env.MK8_GRPC_HOST ?? '',
-    grpc_port: Number(process.env.MK8_GRPC_PORT),
-    grpc_api_key: process.env.MK8_GRPC_API_KEY ?? ''
+
+    mk8_grpc_host: process.env.MK8_GRPC_HOST ?? '',
+    mk8_grpc_api_key: process.env.MK8_GRPC_API_KEY ?? '',
+    account_grpc_host: process.env.MK8_ACCOUNT_GRPC_HOST ?? '',
 }
 
 export default app_config;

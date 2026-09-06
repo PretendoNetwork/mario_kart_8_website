@@ -1,8 +1,6 @@
-import app_config from "@/app.config";
-import { amkj_grpc_client } from "@/helpers/grpc";
+import { amkjGrpcClientWithToken } from "@/helpers/grpc";
 import { GetAllBansResponse } from "@/helpers/proto/generated/amkj_service";
 import { NextResponse } from "next/server";
-import { Metadata } from "nice-grpc";
 
 var allBans: GetAllBansResponse | null = null;
 var lastAllBansTime: Date = new Date();
@@ -12,14 +10,7 @@ export async function GET(request: Request) {
 
 	try {
 		if (!allBans || new Date().getTime() - lastAllBansTime.getTime() > 5000) {
-			allBans = await amkj_grpc_client.getAllBans(
-				{ offset: 0, limit: -1 },
-				{
-					metadata: Metadata({
-						"X-API-Key": app_config.grpc_api_key,
-					}),
-				},
-			);
+			allBans = await amkjGrpcClientWithToken.getAllBans({ offset: 0, limit: -1 });
 			lastAllBansTime = new Date();
 
 			allBans.bans = allBans.bans.sort((a, b) => {

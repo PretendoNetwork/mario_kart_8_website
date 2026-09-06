@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { JWTTokenPayload, getMK8TokenEx } from "@/helpers/types/JWTTokenPayload";
-import { amkj_grpc_client } from "@/helpers/grpc";
-import { Metadata } from "nice-grpc";
-import app_config from "@/app.config";
+import { amkjGrpcClientWithToken } from "@/helpers/grpc";
 import { DeleteTimeTrialRankingRequest, DeleteTimeTrialRankingResponse } from "@/helpers/proto/generated/amkj_service";
 
 export async function POST(request: Request) {
@@ -21,11 +19,7 @@ export async function POST(request: Request) {
 
 		const data: DeleteTimeTrialRankingRequest = await request.json();
 
-		const res = await amkj_grpc_client.deleteTimeTrialRanking(data, {
-			metadata: Metadata({
-				"X-API-Key": app_config.grpc_api_key,
-			}),
-		});
+		const res = await amkjGrpcClientWithToken.deleteTimeTrialRanking(data);
 
 		return NextResponse.json(res as DeleteTimeTrialRankingResponse);
 	} catch (err) {

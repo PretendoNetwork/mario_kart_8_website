@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { JWTTokenPayload, getMK8TokenEx } from "@/helpers/types/JWTTokenPayload";
-import { amkj_grpc_client } from "@/helpers/grpc";
-import { Metadata } from "nice-grpc";
-import app_config from "@/app.config";
+import { amkjGrpcClientWithToken } from "@/helpers/grpc";
 
 export async function POST(request: Request) {
     try {
@@ -18,11 +16,7 @@ export async function POST(request: Request) {
             return new NextResponse("{}", { status: 401 });
         }
 
-        const res = await amkj_grpc_client.endMaintenance({}, {
-            metadata: Metadata({
-                "X-API-Key": app_config.grpc_api_key
-            })
-        });
+        const res = await amkjGrpcClientWithToken.endMaintenance({});
 
         return NextResponse.json(res);
 

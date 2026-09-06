@@ -1,8 +1,6 @@
-import app_config from "@/app.config";
-import { amkj_grpc_client } from "@/helpers/grpc";
+import { amkjGrpcClientWithToken } from "@/helpers/grpc";
 import { GetServerStatusResponse } from "@/helpers/proto/generated/amkj_service";
 import { NextResponse } from "next/server";
-import { Metadata } from "nice-grpc";
 
 var status: GetServerStatusResponse | null = null;
 var lastStatusTime: Date = new Date();
@@ -12,11 +10,7 @@ export async function GET(request: Request) {
 
     try {
         if (!status || ((new Date().getTime() - lastStatusTime.getTime()) > 5000)) {
-            status = await amkj_grpc_client.getServerStatus({}, {
-                metadata: Metadata({
-                    "X-API-Key": app_config.grpc_api_key
-                })
-            });
+            status = await amkjGrpcClientWithToken.getServerStatus({});
             lastStatusTime = new Date();
         }
         return NextResponse.json(status);

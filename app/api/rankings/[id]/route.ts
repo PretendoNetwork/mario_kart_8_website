@@ -1,9 +1,6 @@
-import app_config from "@/app.config";
-import { amkj_grpc_client } from "@/helpers/grpc";
+import { amkjGrpcClientWithToken } from "@/helpers/grpc";
 import { type NextRequest } from 'next/server'
 import { NextResponse } from "next/server";
-import { Metadata } from "nice-grpc";
-
 
 export async function GET(request: NextRequest, ctx: RouteContext<'/api/rankings/[id]'>) {
     request.url; // https://nextjs.org/docs/app/building-your-application/routing/router-handlers#dynamic-route-handlers
@@ -20,11 +17,7 @@ export async function GET(request: NextRequest, ctx: RouteContext<'/api/rankings
             ascFilter = false;
         }
 
-        const response = await amkj_grpc_client.getTimeTrialRanking({ track: trackId, limit: 10, asc: ascFilter }, {
-            metadata: Metadata({
-                "X-API-Key": app_config.grpc_api_key
-            })
-        });
+        const response = await amkjGrpcClientWithToken.getTimeTrialRanking({ track: trackId, limit: 10, asc: ascFilter });
 
 
         return NextResponse.json(response, { status: 200 });

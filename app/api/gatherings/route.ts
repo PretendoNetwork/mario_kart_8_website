@@ -1,8 +1,6 @@
-import app_config from "@/app.config";
-import { amkj_grpc_client } from "@/helpers/grpc";
+import { amkjGrpcClientWithToken } from "@/helpers/grpc";
 import { GetAllGatheringsResponse } from "@/helpers/proto/generated/amkj_service";
 import { NextResponse } from "next/server";
-import { Metadata } from "nice-grpc";
 
 var allGatherings: GetAllGatheringsResponse | null = null;
 var lastAllGatheringsTime: Date = new Date();
@@ -12,11 +10,7 @@ export async function GET(request: Request) {
 
     try {
         if (!allGatherings || ((new Date().getTime() - lastAllGatheringsTime.getTime()) > 5000)) {
-            allGatherings = await amkj_grpc_client.getAllGatherings({ offset: 0, limit: -1 }, {
-                metadata: Metadata({
-                    "X-API-Key": app_config.grpc_api_key
-                })
-            });
+            allGatherings = await amkjGrpcClientWithToken.getAllGatherings({ offset: 0, limit: -1 });
             lastAllGatheringsTime = new Date();
         }
         return NextResponse.json(allGatherings);

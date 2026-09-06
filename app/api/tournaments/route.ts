@@ -1,8 +1,6 @@
-import app_config from "@/app.config";
-import { amkj_grpc_client } from "@/helpers/grpc";
+import { amkjGrpcClientWithToken } from "@/helpers/grpc";
 import { GetAllTournamentsResponse, Tournament } from "@/helpers/proto/generated/amkj_service";
 import { NextResponse } from "next/server";
-import { Metadata } from "nice-grpc";
 
 var allTournaments: GetAllTournamentsResponse | null = null;
 var lastAllTournamentsTime: Date = new Date();
@@ -29,11 +27,7 @@ export async function GET(request: Request) {
 
     try {
         if (!allTournaments || ((new Date().getTime() - lastAllTournamentsTime.getTime()) > 5000)) {
-            allTournaments = await amkj_grpc_client.getAllTournaments({ offset: 0, limit: -1 }, {
-                metadata: Metadata({
-                    "X-API-Key": app_config.grpc_api_key
-                })
-            });
+            allTournaments = await amkjGrpcClientWithToken.getAllTournaments({ offset: 0, limit: -1 });
             sortAllTournaments(allTournaments.tournaments);
             lastAllTournamentsTime = new Date();
         }

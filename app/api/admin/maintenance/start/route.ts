@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { JWTTokenPayload, getMK8TokenEx } from "@/helpers/types/JWTTokenPayload";
-import { amkj_grpc_client } from "@/helpers/grpc";
-import { Metadata } from "nice-grpc";
-import app_config from "@/app.config";
+import { amkjGrpcClientWithToken } from "@/helpers/grpc";
 
 export async function POST(request: Request) {
     try {
@@ -26,13 +24,9 @@ export async function POST(request: Request) {
         startDate.setTime(input.startTime);
         endDate.setTime(input.endTime);
 
-        const res = await amkj_grpc_client.startMaintenance({
+        const res = await amkjGrpcClientWithToken.startMaintenance({
             utcStartMaintenanceTime: startDate,
             utcEndMaintenanceTime: endDate
-        }, {
-            metadata: Metadata({
-                "X-API-Key": app_config.grpc_api_key
-            })
         });
 
         return NextResponse.json(res);
