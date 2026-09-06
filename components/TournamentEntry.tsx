@@ -4,6 +4,7 @@ import { Badge, Card, OverlayTrigger, Popover } from 'react-bootstrap';
 import { BsFillPersonFill, BsGlobe, BsSpeedometer2 } from 'react-icons/bs';
 import { AiFillShopping } from 'react-icons/ai';
 import { RiTeamFill } from 'react-icons/ri';
+import { ReactNode } from 'react';
 
 export interface TournamentEntryProps {
     tournament: Tournament;
@@ -141,7 +142,7 @@ export const TournamentEntry: React.FC<TournamentEntryProps> = ({ tournament }) 
         return AMKJ_REGION_TYPE[tournament.attributes[7]];
     }
 
-    function getTeams(): string | JSX.Element {
+    function getTeams(): ReactNode {
         if (tournament.attributes[4] == 2) {
             return (
                 <>

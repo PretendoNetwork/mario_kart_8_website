@@ -1,5 +1,6 @@
 import Footer from '@/components/Footer';
 import NavigationBar from '@/components/NavigationBar';
+import { ReactNode } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const metadata = {
@@ -7,7 +8,7 @@ export const metadata = {
 	description: 'Pretendo Mario Kart 8 website',
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
 		<html lang="en">
 			<body>

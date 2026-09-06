@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { ReactNode } from "react";
 import Toast from "react-bootstrap/Toast";
 import ToastContainer from "react-bootstrap/ToastContainer";
 
 export interface StaticPopoverProps {
-	title: string | JSX.Element;
-	body: string | JSX.Element;
+	title: ReactNode;
+	body: ReactNode;
 	align_center?: boolean;
 }
 

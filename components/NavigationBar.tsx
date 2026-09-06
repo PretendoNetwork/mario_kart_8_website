@@ -9,12 +9,12 @@ import Popover from "react-bootstrap/Popover";
 import { MdLogin, MdLogout } from "react-icons/md";
 import { isBrowser } from "react-device-detect";
 import { NEXStatus } from "./NEXStatus";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 
 interface NavigationBarEntryProps {
 	name: string;
 	path: string;
-	desc: string | JSX.Element;
+	desc: ReactNode;
 }
 
 const NavigationBarEntry: React.FC<NavigationBarEntryProps> = ({ name, path, desc }) => {
