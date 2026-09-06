@@ -76,7 +76,6 @@ export default function TournamentsPage() {
 		}, 1000);
 
 		return () => clearInterval(timerInterval);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const getPageJSX = () => {

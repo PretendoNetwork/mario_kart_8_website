@@ -46,7 +46,6 @@ export default function GatheringsPage() {
         }, 1000);
 
         return () => clearInterval(timerInterval);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
 

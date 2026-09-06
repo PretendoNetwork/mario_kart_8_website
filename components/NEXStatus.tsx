@@ -28,10 +28,10 @@ export const NEXStatus: React.FC<NEXStatusProps> = ({ responseHeaderCallback }) 
     }
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         fetchNEXStatus();
         const interval = setInterval(fetchNEXStatus, 10000);
         return () => clearInterval(interval);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {

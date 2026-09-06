@@ -44,7 +44,6 @@ export default function BansPage() {
 		}, 1000);
 
 		return () => clearInterval(timerInterval);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const getPageJSX = () => {

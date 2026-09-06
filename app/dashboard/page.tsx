@@ -86,7 +86,6 @@ const DashboardPage = () => {
         } catch (error) {
             console.error('Failed to fetch user data:', error);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getPageJSX = () => {

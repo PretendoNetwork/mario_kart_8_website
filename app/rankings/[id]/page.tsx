@@ -74,6 +74,7 @@ export default function TrackRankingPage() {
     }
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         fetchRankings(filterAsc);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filterAsc]);
