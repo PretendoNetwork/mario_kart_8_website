@@ -7,8 +7,8 @@ export async function POST(request: Request): Promise<NextResponse<JWTTokenPaylo
     try {
         const { token, secret } = await request.json();
         if (!token || !secret) throw new Error("Incorrect body");
-        if (token !== app_config.internal_secret_key) throw new Error("Incorrect secret");
-
+        if (secret !== app_config.internal_secret_key) throw new Error("Incorrect secret");
+        
         const tokenData = await buildUserdataFromGrpc(token);
         return NextResponse.json(tokenData);
     } catch (err) {

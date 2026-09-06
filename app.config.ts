@@ -14,8 +14,11 @@ interface AppConfig {
     /** API key of the MK8 GRPC service */
     mk8_grpc_api_key: string;
 
-    /** GRPC host of the account service GRPC service. Example: `localhost:8080` */
+    /** GRPC host of the account GRPC service. Example: `localhost:8080` */
     account_grpc_host: string;
+
+    /** API key of the account GRPC service */
+    account_grpc_api_key: string;
 
     /** Base URL of the Mii image CDN, must be the same as the account service. Example: `https://r2-cdn.pretendo.cc` */
     cdn_base_url: string;
@@ -30,6 +33,7 @@ const app_config: AppConfig = {
     mk8_grpc_host: process.env.MK8_GRPC_HOST ?? '',
     mk8_grpc_api_key: process.env.MK8_GRPC_API_KEY ?? '',
     account_grpc_host: process.env.MK8_ACCOUNT_GRPC_HOST ?? '',
+    account_grpc_api_key: process.env.MK8_ACCOUNT_GRPC_API_KEY ?? '',
 }
 
 export default app_config;

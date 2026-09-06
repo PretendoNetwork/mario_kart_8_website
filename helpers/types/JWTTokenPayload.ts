@@ -54,6 +54,7 @@ async function getUserdataFromToken(token: string): Promise<JWTTokenPayload | nu
                 token,
             }),
         });
+        if (response.status !== 200) throw new Error("Status is not 200 for token exchange");
         const json = await response.json();
         return json as JWTTokenPayload;
     } catch (err) {
@@ -65,6 +66,7 @@ async function getUserdataFromToken(token: string): Promise<JWTTokenPayload | nu
 export async function buildUserdataFromGrpc(token: string): Promise<JWTTokenPayload> {
     const userData = await legacyApiGrpcClient.getUserData({}, {
         metadata: Metadata({
+            "X-API-Key": app_config.account_grpc_api_key,
             "X-Token": token
         })
     })
