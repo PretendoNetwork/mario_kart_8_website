@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { type JWTTokenPayload, getMK8Token, getMK8TokenFromAccountAPI } from "./helpers/types/JWTTokenPayload";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
 	const nextPathname = request.nextUrl.pathname;
 	const allowedPIDs: number[] = [1606041002, 1628534996]; // PretendoRambo3, PN_Rambo2 -- In addition to access_level >= 3
 
