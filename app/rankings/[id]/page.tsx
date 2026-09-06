@@ -2,11 +2,12 @@
 
 import { GetTimeTrialRankingResponse, TimeTrialRanking } from "@/helpers/proto/generated/amkj_service";
 import TrackList from "@/helpers/types/TrackList";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Alert, Form, Spinner, Table } from "react-bootstrap";
 
-export default function TrackRankingPage({ params }: { params: { id: string } }) {
-
+export default function TrackRankingPage() {
+    const params = useParams<{ id: string }>();
     const [rankingResponse, setRankingResponse] = useState<Response | null>(null);
 
     const [worstRankings, setWorstRankings] = useState<TimeTrialRanking[]>([]);

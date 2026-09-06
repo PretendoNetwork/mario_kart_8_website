@@ -5,11 +5,12 @@ import { NextResponse } from "next/server";
 import { Metadata } from "nice-grpc";
 
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, ctx: RouteContext<'/api/rankings/[id]'>) {
     request.url; // https://nextjs.org/docs/app/building-your-application/routing/router-handlers#dynamic-route-handlers
+    const { id } = await ctx.params;
 
     try {
-        const trackId = parseInt(params.id);
+        const trackId = parseInt(id);
         if (isNaN(trackId)) {
             throw new Error("Invalid track ID");
         }
