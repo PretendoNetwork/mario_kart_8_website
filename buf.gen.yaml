@@ -1,0 +1,10 @@
+version: v2
+
+plugins:
+  - local: protoc-gen-ts_proto
+    out: helpers/proto/generated
+    opt:
+      - outputServices=nice-grpc
+      - outputServices=generic-definitions
+      - esModuleInterop=true
+      # - useExactTypes=false

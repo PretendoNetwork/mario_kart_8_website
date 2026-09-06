@@ -1,5 +1,5 @@
-import { createChannel, createClient, Metadata } from 'nice-grpc';
-import { AmkjServiceClient, AmkjServiceDefinition, GetServerStatusResponse } from '@/helpers/proto/amkj_service';
+import { createChannel, createClient } from 'nice-grpc';
+import { AmkjServiceClient, AmkjServiceDefinition } from '@/helpers/proto/generated/amkj_service';
 import app_config from '@/app.config';
 
 const channel = createChannel(`${app_config.grpc_host}:${app_config.grpc_port}`);
