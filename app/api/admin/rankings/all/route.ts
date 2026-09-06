@@ -8,7 +8,7 @@ import { DeleteAllTimeTrialRankingsRequest, DeleteAllTimeTrialRankingsResponse }
 
 export async function POST(request: Request) {
 	try {
-		const cookieStore = cookies();
+		const cookieStore = await cookies();
 		const mk8_token = cookieStore.get("mk8_token");
 		if (!mk8_token) {
 			return new NextResponse("{}", { status: 401 });

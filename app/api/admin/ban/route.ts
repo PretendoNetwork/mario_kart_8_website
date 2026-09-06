@@ -8,7 +8,7 @@ import { ClearBanRequest, ClearBanResponse, IssueBanRequest, IssueBanResponse } 
 
 export async function POST(request: Request) {
 	try {
-		const cookieStore = cookies();
+		const cookieStore = await cookies();
 		const mk8_token = cookieStore.get("mk8_token");
 		if (!mk8_token) {
 			return new NextResponse("{}", { status: 401 });
@@ -40,7 +40,7 @@ export async function POST(request: Request) {
 
 export async function PATCH(request: Request) {
 	try {
-		const cookieStore = cookies();
+		const cookieStore = await cookies();
 		const mk8_token = cookieStore.get("mk8_token");
 		if (!mk8_token) {
 			return new NextResponse("{}", { status: 401 });
