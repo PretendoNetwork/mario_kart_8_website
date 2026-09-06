@@ -4,7 +4,6 @@ import { type JWTTokenPayload, getMK8Token, getMK8TokenFromAccountAPI } from "./
 
 export async function proxy(request: NextRequest) {
 	const nextPathname = request.nextUrl.pathname;
-	const allowedPIDs: number[] = [1606041002, 1628534996]; // PretendoRambo3, PN_Rambo2 -- In addition to access_level >= 3
 
 	if (nextPathname.startsWith("/logout")) {
 		const url = new URL("/", request.url);
@@ -42,7 +41,7 @@ export async function proxy(request: NextRequest) {
 		if (mk8_token) {
 			if (nextPathname.startsWith("/api/admin/userdata")) {
 				return NextResponse.next();
-			} else if (mk8_token.access_level >= 3 || allowedPIDs.includes(mk8_token.pid)) {
+			} else if (mk8_token.access_level >= 3) {
 				return NextResponse.next();
 			} else {
 				return new NextResponse("{}", { status: 401 });
@@ -54,7 +53,7 @@ export async function proxy(request: NextRequest) {
 
 	if (nextPathname.startsWith("/admin")) {
 		if (mk8_token) {
-			const isAdmin = mk8_token.access_level >= 3 || allowedPIDs.includes(mk8_token.pid);
+			const isAdmin = mk8_token.access_level >= 3;
 			if (!isAdmin) {
 				var response = NextResponse.redirect(new URL("/", request.url));
 			} else {
