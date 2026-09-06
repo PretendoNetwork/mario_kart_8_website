@@ -1,4 +1,4 @@
-import { Tournament } from '@/helpers/proto/amkj_service';
+import { Tournament } from '@/helpers/proto/generated/amkj_service';
 import Image from 'next/image';
 import { Badge, Card, OverlayTrigger, Popover } from 'react-bootstrap';
 import { BsFillPersonFill, BsGlobe, BsSpeedometer2 } from 'react-icons/bs';

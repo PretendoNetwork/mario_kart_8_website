@@ -4,7 +4,7 @@ import { JWTTokenPayload, getMK8TokenEx } from "@/helpers/types/JWTTokenPayload"
 import { amkj_grpc_client } from "@/helpers/grpc";
 import { Metadata } from "nice-grpc";
 import app_config from "@/app.config";
-import { DeleteTimeTrialRankingRequest, DeleteTimeTrialRankingResponse } from "@/helpers/proto/amkj_service";
+import { DeleteTimeTrialRankingRequest, DeleteTimeTrialRankingResponse } from "@/helpers/proto/generated/amkj_service";
 
 export async function POST(request: Request) {
 	try {

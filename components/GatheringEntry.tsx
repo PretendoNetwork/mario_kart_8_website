@@ -1,4 +1,4 @@
-import { Gathering } from '@/helpers/proto/amkj_service';
+import { Gathering } from '@/helpers/proto/generated/amkj_service';
 import { Card, OverlayTrigger, Popover, Table } from 'react-bootstrap';
 import { BsGlobe, BsController } from 'react-icons/bs';
 import { AiFillShopping } from 'react-icons/ai';

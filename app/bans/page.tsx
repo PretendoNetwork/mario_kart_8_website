@@ -1,6 +1,6 @@
 "use client";
 
-import { Ban, GetAllBansResponse } from "@/helpers/proto/amkj_service";
+import { Ban, GetAllBansResponse } from "@/helpers/proto/generated/amkj_service";
 import { useEffect, useState } from "react";
 import { Alert, Spinner, Table } from "react-bootstrap";
 

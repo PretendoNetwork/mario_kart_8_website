@@ -1,6 +1,6 @@
 'use client'
 
-import { GetUnlocksResponse } from "@/helpers/proto/amkj_service"
+import { GetUnlocksResponse } from "@/helpers/proto/generated/amkj_service"
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Alert, ListGroup, Spinner } from "react-bootstrap";

@@ -1,6 +1,6 @@
 import app_config from "@/app.config";
 import { amkj_grpc_client } from "@/helpers/grpc";
-import { GetServerStatusResponse } from "@/helpers/proto/amkj_service";
+import { GetServerStatusResponse } from "@/helpers/proto/generated/amkj_service";
 import { NextResponse } from "next/server";
 import { Metadata } from "nice-grpc";
 
@@ -21,6 +21,7 @@ export async function GET(request: Request) {
         }
         return NextResponse.json(status);
     } catch (err) {
+        console.error(err);
         return new NextResponse("{}", { status: 500 });
     }
 }

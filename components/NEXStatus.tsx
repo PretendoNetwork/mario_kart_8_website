@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link';
-import { GetServerStatusResponse } from '@/helpers/proto/amkj_service';
+import { GetServerStatusResponse } from '@/helpers/proto/generated/amkj_service';
 import { useEffect, useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 import { StaticToast } from './StaticToast';

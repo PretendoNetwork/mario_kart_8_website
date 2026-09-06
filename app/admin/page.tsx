@@ -6,7 +6,7 @@ import {
 	DeleteTimeTrialRankingRequest,
 	IssueBanRequest,
 	KickAllUsersResponse,
-} from "@/helpers/proto/amkj_service";
+} from "@/helpers/proto/generated/amkj_service";
 import TrackList from "@/helpers/types/TrackList";
 import { useState } from "react";
 import { Alert, Button, FormSelect, InputGroup } from "react-bootstrap";

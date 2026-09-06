@@ -1,7 +1,7 @@
 'use client'
 
 import { GatheringEntry } from '@/components/GatheringEntry';
-import { Gathering } from '@/helpers/proto/amkj_service';
+import { Gathering } from '@/helpers/proto/generated/amkj_service';
 import { useEffect, useState } from 'react';
 import { Alert, Spinner } from 'react-bootstrap';
 

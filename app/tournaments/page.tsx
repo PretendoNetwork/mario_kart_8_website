@@ -1,7 +1,7 @@
 "use client";
 
 import { TournamentEntry } from "@/components/TournamentEntry";
-import { Tournament } from "@/helpers/proto/amkj_service";
+import { Tournament } from "@/helpers/proto/generated/amkj_service";
 import { useEffect, useState } from "react";
 import { Alert, Form, InputGroup, Pagination, Spinner } from "react-bootstrap";
 import { FaSearch } from "react-icons/fa";

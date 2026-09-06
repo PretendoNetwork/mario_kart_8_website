@@ -1,6 +1,6 @@
 "use client";
 
-import { GetTimeTrialRankingResponse, TimeTrialRanking } from "@/helpers/proto/amkj_service";
+import { GetTimeTrialRankingResponse, TimeTrialRanking } from "@/helpers/proto/generated/amkj_service";
 import TrackList from "@/helpers/types/TrackList";
 import { useEffect, useState } from "react";
 import { Alert, Form, Spinner, Table } from "react-bootstrap";

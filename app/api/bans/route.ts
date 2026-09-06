@@ -1,6 +1,6 @@
 import app_config from "@/app.config";
 import { amkj_grpc_client } from "@/helpers/grpc";
-import { GetAllBansResponse } from "@/helpers/proto/amkj_service";
+import { GetAllBansResponse } from "@/helpers/proto/generated/amkj_service";
 import { NextResponse } from "next/server";
 import { Metadata } from "nice-grpc";
 
