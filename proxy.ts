@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { type JWTTokenPayload, getMK8Token, getMK8TokenFromAccountAPI } from "./helpers/types/JWTTokenPayload";
+import { type JWTTokenPayload, getMK8Token, getMK8TokenFromAccountAPI, getMiiImageFromPid } from "./helpers/types/JWTTokenPayload";
 
 export async function proxy(request: NextRequest) {
 	const nextPathname = request.nextUrl.pathname;
@@ -54,7 +54,7 @@ export async function proxy(request: NextRequest) {
 
 			response.headers.set("X-MK8-Pretendo-ACL", mk8_token.access_level.toString());
 			response.headers.set("X-MK8-Pretendo-Username", mk8_token.pnid);
-			response.headers.set("X-MK8-Pretendo-ImageURL", mk8_token.mii_image_url);
+			response.headers.set("X-MK8-Pretendo-ImageURL", getMiiImageFromPid(mk8_token.pid));
 			response.headers.set("X-MK8-Pretendo-PID", mk8_token.pid.toString());
 			if (res) {
 				response.cookies.set("mk8_token", res.jwt_token, { sameSite: 'strict', httpOnly: true });
@@ -72,7 +72,7 @@ export async function proxy(request: NextRequest) {
 		if (mk8_token) {
 			response.headers.set("X-MK8-Pretendo-ACL", mk8_token.access_level.toString());
 			response.headers.set("X-MK8-Pretendo-Username", mk8_token.pnid);
-			response.headers.set("X-MK8-Pretendo-ImageURL", mk8_token.mii_image_url);
+			response.headers.set("X-MK8-Pretendo-ImageURL", getMiiImageFromPid(mk8_token.pid));
 			response.headers.set("X-MK8-Pretendo-PID", mk8_token.pid.toString());
 		}
 		if (res) {
