@@ -2,6 +2,9 @@
   "name": "mario_kart_8_website",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "^24.22.1"
+  },
   "scripts": {
     "dev": "npm run build:proto && next dev",
     "dev:pretendo": "npm run build:proto && next dev --hostname mario-kart-8.pretendo.network --port 80 -H 0.0.0.0",
