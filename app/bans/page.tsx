@@ -13,7 +13,7 @@ export default function BansPage() {
 
 	const fetchAllBans = async () => {
 		try {
-			const response = await fetch("/api/bans", { cache: "no-store" });
+			const response = await fetch("/api/admin/bans", { cache: "no-store" });
 			setAllBansResponse(response);
 			const data = (await response.json()) as GetAllBansResponse;
 			setAllBans(data.bans);

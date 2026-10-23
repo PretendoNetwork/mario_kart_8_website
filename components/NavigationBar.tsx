@@ -113,7 +113,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({}) => {
 						/>
 						<NavigationBarEntry path="/tournaments" name="Tournaments" desc="List of tournaments" />
 						<NavigationBarEntry path="/rankings" name="Rankings" desc="Time trial rankings" />
-						<NavigationBarEntry path="/bans" name="Bans" desc="List of bans" />
+						{isAdmin && <NavigationBarEntry path="/bans" name="Bans" desc="List of bans" />}
 					</Nav>
 					<Nav className="ms-3 justify-content-between align-items-center">
 						{isAdmin && <NavigationBarEntry path="/admin" name="Admin panel" desc="Admin panel" />}

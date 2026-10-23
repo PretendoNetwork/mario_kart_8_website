@@ -6,6 +6,11 @@ const skipProxy = [
 	'/api/exchange-token'
 ]
 
+const adminPages = [
+	"/bans",
+	"/admin"
+]
+
 export async function proxy(request: NextRequest) {
 	const nextPathname = request.nextUrl.pathname;
 	if (skipProxy.includes(nextPathname)) {
@@ -50,7 +55,7 @@ export async function proxy(request: NextRequest) {
 		}
 	}
 
-	if (nextPathname.startsWith("/admin")) {
+	if (adminPages.some(v => nextPathname.startsWith(v))) {
 		if (mk8_token) {
 			const isAdmin = mk8_token.access_level >= 3;
 			if (!isAdmin) {
@@ -89,5 +94,5 @@ export async function proxy(request: NextRequest) {
 	}
 }
 export const config = {
-	matcher: ["/", "/api/:path*", "/admin/:path*", "/dashboard/:path*", "/tournaments/:path*", "/gatherings/:path*", "/rankings/:path*"],
+	matcher: ["/", "/bans", "/api/:path*", "/admin/:path*", "/dashboard/:path*", "/tournaments/:path*", "/gatherings/:path*", "/rankings/:path*"],
 };
